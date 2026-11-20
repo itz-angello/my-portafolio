@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angel Chacón — Web Developer in Guatemala</title>
+  <meta name="description" content="Angel Chacón is a web developer in Guatemala who builds and restores websites for small businesses.">
+  <meta property="og:title" content="Angel Chacón — Web Developer">
+  <meta property="og:description" content="Web developer in Guatemala. Building fast, responsive websites.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script>
+    window.__updateMeta = function(lang) {
+      var titles = {
+        en: "Angel Chacón — Web Developer in Guatemala",
+        es: "Angel Chacón — Desarrollador web en Guatemala"
+      };
+      var descs = {
+        en: "Angel Chacón is a web developer in Guatemala who builds and restores websites for small businesses.",
+        es: "Angel Chacón es desarrollador web en Guatemala. Crea y restaura sitios para negocios y clientes freelance."
+      };
+      document.title = titles[lang] || titles.en;
+      var metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', descs[lang] || descs.en);
+    };
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/entries/home.tsx"></script>
+</body>
+</html>

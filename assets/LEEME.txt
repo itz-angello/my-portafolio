@@ -1,0 +1,2 @@
+Pon aquí tus archivos: tu foto (me.png), tu CV (cv.pdf) y las capturas de tus proyectos.
+Después escribe su ruta en js/config.js, por ejemplo: photo: "assets/me.png"

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Angel Chacón, Web Developer</title>
+  <meta name="description" content="Projects, certificates, and skills from Angel Chacón, a web developer in Guatemala.">
+  <meta property="og:title" content="Portfolio — Angel Chacón">
+  <meta property="og:description" content="Projects and work by Angel Chacón, web developer in Guatemala.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="/portfolio/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script>
+    window.__updateMeta = function(lang) {
+      var titles = {
+        en: "Portfolio — Angel Chacón, Web Developer",
+        es: "Portafolio — Angel Chacón, Desarrollador web"
+      };
+      var descs = {
+        en: "Projects, certificates, and skills from Angel Chacón, a web developer in Guatemala.",
+        es: "Proyectos, certificados y habilidades de Angel Chacón, desarrollador web en Guatemala."
+      };
+      document.title = titles[lang] || titles.en;
+      var metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', descs[lang] || descs.en);
+    };
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/entries/portfolio.tsx"></script>
+</body>
+</html>

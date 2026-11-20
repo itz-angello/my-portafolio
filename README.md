@@ -1,0 +1,89 @@
+# Portafolio de Angel Chacón
+
+Portafolio bilingüe de **Angel Chacón, desarrollador web en Guatemala**. Presenta proyectos, servicios y formas de contacto en español e inglés.
+
+## Tecnologías
+
+React 19, TypeScript, Vite, Tailwind CSS 4, Framer Motion y Lucide React.
+
+## Requisitos
+
+- Node.js **22.12 o superior** (recomendado; cubre el requisito de Vite de Node 20.19+ o 22.12+ según sus [requisitos actuales](https://vite.dev/guide/)).
+- npm, incluido con Node.js.
+
+## Instalación y desarrollo
+
+1. Clona el repositorio:
+
+   ```bash
+   git clone <URL-DEL-REPOSITORIO> angello-site
+   ```
+
+2. Entra en la carpeta e instala las dependencias:
+
+   ```bash
+   cd angello-site
+   npm install
+   ```
+
+3. Inicia el servidor de desarrollo y abre la URL que indique la terminal (por defecto, `http://localhost:5173`):
+
+   ```bash
+   npm run dev
+   ```
+
+## Scripts
+
+| Comando | Función |
+| --- | --- |
+| `npm run dev` | Inicia Vite para desarrollo local. |
+| `npm run build` | Comprueba TypeScript y genera la versión de producción en `dist/`. |
+| `npm run preview` | Sirve localmente la versión generada en `dist/`. Ejecuta primero `npm run build`. |
+
+## Estructura
+
+- `src/components/`: componentes compartidos de interfaz.
+- `src/pages/`: páginas del sitio.
+- `src/entries/`: entradas HTML y React para las rutas públicas.
+- `src/content.ts`: textos ES/EN y contenido general.
+- `src/content/projects.ts`: catálogo bilingüe de proyectos y datos de sus rutas.
+- `src/assets/`: imágenes y otros recursos del sitio.
+- `public/`: archivos estáticos públicos, como el favicon.
+- `dist/`: salida generada por el build; no se edita a mano.
+
+## Cambiar textos ES/EN
+
+Edita `src/content.ts`. Los textos se organizan por idioma (`en` y `es`); por ejemplo:
+
+```ts
+texts: {
+  en: { about: { heading: 'About' } },
+  es: { about: { heading: 'Sobre mí' } },
+  // ...resto del contenido
+}
+```
+
+Los nombres y descripciones de proyectos se editan en `src/content/projects.ts`.
+
+## Agregar un proyecto
+
+Añade un objeto a `projects` en `src/content/projects.ts`. Las propiedades de texto tienen versiones `en` y `es`; `longDescription`, `screenshot`, `url` y `repository` son opcionales.
+
+```ts
+{
+  slug: 'mi-proyecto', // crea /portfolio/mi-proyecto/
+  name: { en: 'My project', es: 'Mi proyecto' },
+  shortDescription: { en: 'Short summary.', es: 'Resumen breve.' },
+  longDescription: { en: 'More detail.', es: 'Más detalles.' },
+  technologies: ['React', 'TypeScript'],
+  screenshot: myProjectScreenshot, // opcional; importar desde src/assets/
+  url: 'https://example.com', // opcional; muestra “Ver sitio”
+  repository: 'https://github.com/example/repo', // opcional
+}
+```
+
+Para añadir una captura, impórtala al inicio de `projects.ts`, por ejemplo `import myProjectScreenshot from '../assets/mi-proyecto.webp';`, y asígnala a `screenshot`. Sin captura, se muestra una tarjeta limpia con nombre y tecnologías. Las tarjetas y fichas se generan desde el catálogo.
+
+## Publicar
+
+Ejecuta `npm run build` y publica el contenido de `dist/` en tu proveedor de hosting. Para revisar el resultado localmente, ejecuta `npm run preview`.

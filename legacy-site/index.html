@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Angel Chacón | Web developer in Guatemala</title>
+<meta name="description" content="Angel Chacón is a web developer in Guatemala who builds and restores websites for small businesses and freelance clients.">
+<meta name="theme-color" content="#0f0f12">
+<meta property="og:title" content="Angel Chacón">
+<meta property="og:description" content="Web developer in Guatemala. Websites for small businesses and freelance clients.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0f12'/%3E%3Cpath d='M18 20l-10 12 10 12M46 20l10 12-10 12' stroke='%23ff3d81' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>document.documentElement.className += " js";</script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+<header class="top">
+  <a class="logo" href="#home" aria-label="Angello">&lt;/&gt; <span id="logoName">Angello</span></a>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="es" aria-pressed="false">ES</button>
+  </div>
+  <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="nav" data-i18n-aria="menu">Menu</button>
+  <nav id="nav" aria-label="Main">
+    <a href="#about" data-i18n="nav_about">About</a>
+    <a href="#projects" data-i18n="nav_projects">Projects</a>
+    <a href="#skills" data-i18n="nav_skills">Skills</a>
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="#contact" data-i18n="nav_contact">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" id="home">
+    <div class="wrap">
+      <h1 class="wordmark" id="wordmark">Angello</h1>
+      <div class="hero-grid">
+        <div class="intro">
+          <p data-i18n="hero_tag">I'm a web developer from Guatemala. I build websites for small businesses and freelance clients.</p>
+          <a class="cta" href="#contact" data-i18n="hero_cta">Contact me</a>
+        </div>
+        <div class="hero-art" id="heroArt">
+          <div class="win" aria-hidden="true">
+            <div class="win-bar"><i></i><i></i><i></i><span>yourbusiness.com</span></div>
+            <div class="win-body">
+              <div class="bar big"></div><div class="bar w85"></div><div class="bar w60"></div>
+              <div class="tiles"><b></b><b></b><b></b></div>
+              <div class="bar w40"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="track" id="marquee"></div></div>
+
+  <section id="about" class="wrap reveal">
+    <h2 data-i18n="about_title">About</h2>
+    <div class="about">
+      <p class="lead" data-i18n="about_lead">I make websites that load fast, look good on a phone and are easy for customers to use.</p>
+      <div>
+        <p data-i18n="about_1">I'm a web developer based in Guatemala. I build and restore websites for small businesses and take freelance projects from clients abroad.</p>
+        <p data-i18n="about_2">I am open to freelance projects and long-term clients.</p>
+        <a class="pill" id="cvLink" href="#" hidden data-i18n="cv">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="wrap">
+    <h2 class="reveal" data-i18n="projects_title">Projects</h2>
+    <div class="stack" id="stack"></div>
+  </section>
+
+  <section id="skills" class="wrap reveal">
+    <h2 data-i18n="skills_title">Skills</h2>
+    <div class="filters" id="filters" role="group" aria-label="Filter skills"></div>
+    <div class="skills-grid">
+      <div class="tiles-skill" id="skillTiles"></div>
+      <aside class="skill-detail" id="skillDetail" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <div class="band" id="services">
+    <div class="wrap reveal">
+      <h2 data-i18n="services_title">Services</h2>
+      <div class="svc"><h3 data-i18n="s1_t">Business websites</h3><p data-i18n="s1_d">A full site for a shop, restaurant or service business, built to load fast and read well on a phone.</p></div>
+      <div class="svc"><h3 data-i18n="s2_t">Landing pages</h3><p data-i18n="s2_d">One focused page for a product, an offer or an event, with a clear button for the visitor to press.</p></div>
+      <div class="svc"><h3 data-i18n="s3_t">Website restoration</h3><p data-i18n="s3_d">If your current site is old, broken or hard to use on a phone, I rebuild it and keep what already works.</p></div>
+      <div class="svc"><h3 data-i18n="s4_t">Updates and fixes</h3><p data-i18n="s4_d">Text changes, new sections, bug fixes and small improvements after your site is live.</p></div>
+    </div>
+  </div>
+
+  <section id="contact" class="wrap reveal">
+    <h2 class="big" data-i18n="contact_title">Need a website?</h2>
+    <div class="contact-grid">
+      <div>
+        <p data-i18n="contact_text">Tell me about your business and what you need.</p>
+        <div class="links" id="links"></div>
+      </div>
+      <form id="form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p class="hp"><label>Do not fill this out <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label for="f-name" data-i18n="f_name">Name</label>
+        <input id="f-name" name="name" required autocomplete="name">
+        <label for="f-email" data-i18n="f_email">Email</label>
+        <input id="f-email" name="email" type="email" required autocomplete="email">
+        <label for="f-msg" data-i18n="f_msg">Message</label>
+        <textarea id="f-msg" name="message" rows="5" required></textarea>
+        <button class="cta" type="submit" data-i18n="f_send">Send</button>
+        <p class="status" id="status" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span id="footName">Angello</span>. <span data-i18n="footer">Built in Guatemala.</span></div></footer>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

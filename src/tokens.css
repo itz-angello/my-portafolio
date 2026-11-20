@@ -1,0 +1,22 @@
+@theme {
+  --color-bg: #1B2D3A;
+  --color-surface: #243C4C;
+  --color-surface-2: #2C4759;
+  --color-text: #F4FCFB;
+  --color-soft: #ACBCBF;
+  --color-muted: #698696;
+  --color-accent: #5289AD;
+  --color-ink: #18262F;
+  --color-forge: #E98245;
+  --color-ember: #EDA158;
+  --color-ember-hot: #F5BA7B;
+  --color-ember-deep: #D66B36;
+  --color-forge-deep: #7D3527;
+  --color-forge-shadow: #252D31;
+  --color-textile: #719A9A;
+  --color-textile-light: #DFBC82;
+
+  --font-heading: 'Syne', sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}

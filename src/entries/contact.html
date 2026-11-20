@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Angel Chacón, Web Developer</title>
+  <meta name="description" content="Get in touch with Angel Chacón about your web project. Fast response, clear estimate.">
+  <meta property="og:title" content="Contact — Angel Chacón">
+  <meta property="og:description" content="Get in touch with Angel Chacón about your web project.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="/contact/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script>
+    window.__updateMeta = function(lang) {
+      var titles = {
+        en: "Contact — Angel Chacón, Web Developer",
+        es: "Contacto — Angel Chacón, Desarrollador web"
+      };
+      var descs = {
+        en: "Get in touch with Angel Chacón about your web project. Fast response, clear estimate.",
+        es: "Escríbele a Angel Chacón sobre tu proyecto web. Respuesta rápida y presupuesto claro."
+      };
+      document.title = titles[lang] || titles.en;
+      var metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', descs[lang] || descs.en);
+    };
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/entries/contact.tsx"></script>
+</body>
+</html>

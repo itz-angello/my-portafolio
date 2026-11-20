@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+  <rect width="600" height="800" fill="#151A18" rx="16"/>
+  <rect x="2" y="2" width="596" height="796" fill="none" stroke="#2A302D" stroke-width="2" rx="14"/>
+  
+  <!-- Browser / Mobile Header -->
+  <rect x="24" y="24" width="552" height="44" rx="8" fill="#0E1110"/>
+  <rect x="40" y="38" width="16" height="16" rx="4" fill="#3DAA85"/>
+  <rect x="72" y="42" width="260" height="8" rx="4" fill="#2A302D"/>
+  <text x="350" y="50" fill="#8A948E" font-family="system-ui, sans-serif" font-size="11" font-weight="500">paraboostorytelling.com</text>
+
+  <!-- Hero Wireframe -->
+  <rect x="36" y="92" width="528" height="170" rx="12" fill="#1A211E" stroke="#2A302D"/>
+  <text x="64" y="146" fill="#E8EDE9" font-family="'Archivo Black', system-ui, sans-serif" font-size="26" font-weight="900" letter-spacing="-0.02em">PARA BOO STORYTELLING</text>
+  <text x="64" y="178" fill="#8A948E" font-family="system-ui, sans-serif" font-size="14" font-weight="500">Smooth micro-interactions</text>
+  <rect x="64" y="206" width="110" height="32" rx="6" fill="#3DAA85"/>
+  <text x="119" y="226" fill="#0E1110" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle">VIEW LIVE</text>
+
+  <!-- Content cards -->
+  <rect x="36" y="286" width="250" height="136" rx="10" fill="#0E1110" stroke="#2A302D"/>
+  <rect x="56" y="306" width="32" height="32" rx="6" fill="#3DAA85" fill-opacity="0.2"/>
+  <rect x="56" y="356" width="120" height="10" rx="4" fill="#2A302D"/>
+  <rect x="56" y="376" width="170" height="6" rx="3" fill="#1F2623"/>
+
+  <rect x="314" y="286" width="250" height="136" rx="10" fill="#0E1110" stroke="#2A302D"/>
+  <rect x="334" y="306" width="32" height="32" rx="6" fill="#3DAA85" fill-opacity="0.2"/>
+  <rect x="334" y="356" width="120" height="10" rx="4" fill="#2A302D"/>
+  <rect x="334" y="376" width="170" height="6" rx="3" fill="#1F2623"/>
+
+  <!-- Analytics / Chart section -->
+  <rect x="36" y="446" width="528" height="200" rx="12" fill="#0E1110" stroke="#2A302D"/>
+  <path d="M60 590 C 130 530, 190 560, 260 500 C 330 440, 410 520, 520 470" fill="none" stroke="#3DAA85" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="260" cy="500" r="5" fill="#3DAA85"/>
+  <circle cx="520" cy="470" r="5" fill="#3DAA85"/>
+
+  <!-- Bottom CTA bar -->
+  <rect x="36" y="670" width="528" height="84" rx="10" fill="#1A211E" stroke="#2A302D"/>
+  <text x="64" y="718" fill="#E8EDE9" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Client Platform Showcase</text>
+  <rect x="440" y="694" width="104" height="36" rx="6" fill="#3DAA85"/>
+  <text x="492" y="716" fill="#0E1110" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">VISIT</text>
+</svg>
