@@ -4,17 +4,21 @@ import { Footer } from './Footer';
 import { Loader } from './Loader';
 import { CursorOrb } from './CursorOrb';
 import { content } from '../content';
+import { MetadataPage, PageMetadata } from './PageMetadata';
 
 type Page = 'home' | 'about' | 'portfolio' | 'contact';
 
 interface LayoutProps {
   currentPage: Page;
+  metadataPage?: MetadataPage | null;
   children: React.ReactNode;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ currentPage, children }) => {
+export const Layout: React.FC<LayoutProps> = ({ currentPage, metadataPage, children }) => {
+  const resolvedMetadataPage = metadataPage === undefined ? currentPage : metadataPage;
   return (
     <>
+      {resolvedMetadataPage && <PageMetadata page={resolvedMetadataPage} />}
       <Loader />
       <CursorOrb />
       {/* Skip to content link */}

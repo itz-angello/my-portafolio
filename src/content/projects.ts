@@ -11,15 +11,22 @@ export interface Project {
   shortDescription: LocalizedText;
   longDescription?: LocalizedText;
   technologies: string[];
-  screenshot?: string;
+  featured: boolean;
+  category?: ProjectCategory;
+  role?: LocalizedText;
+  year?: number;
+  image?: string;
+  imageAlt?: LocalizedText;
   url?: string;
-  repository?: string;
+  repo?: string;
   caseStudy?: {
     problem?: LocalizedText;
     solution?: LocalizedText;
     result?: LocalizedText;
   };
 }
+
+export type ProjectCategory = 'personal' | 'client' | 'learning';
 
 export const projectLabels: Record<ProjectLanguage, { visitSite: string; repository: string }> = {
   en: { visitSite: 'Visit site', repository: 'Repository' },
@@ -29,6 +36,8 @@ export const projectLabels: Record<ProjectLanguage, { visitSite: string; reposit
 export const projects: Project[] = [
   {
     slug: 'webforge',
+    featured: true,
+    category: 'personal',
     name: { en: 'WebForge', es: 'WebForge' },
     shortDescription: {
       en: 'A digital studio for small businesses and modern entrepreneurs.',
@@ -43,6 +52,8 @@ export const projects: Project[] = [
   },
   {
     slug: 'chapinstock',
+    featured: true,
+    category: 'client',
     name: { en: 'Chapin Stock', es: 'Chapin Stock' },
     shortDescription: {
       en: 'A digital catalog and e-commerce portal for a retail client in Guatemala.',
@@ -61,6 +72,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'paraboo',
+    featured: true,
     name: { en: 'Para Boo', es: 'Para Boo' },
     shortDescription: {
       en: 'An interactive web canvas exploring motion, physics, and audio-reactive visuals.',
@@ -74,3 +86,24 @@ export const projects: Project[] = [
     url: 'https://paraboo.space',
   },
 ];
+
+/*
+ * Example project with a bundled capture and live URL:
+ *
+ * import workshopCapture from '../assets/projects/workshop.webp';
+ * {
+ *   slug: 'mi-proyecto',
+ *   featured: false,
+ *   category: 'personal', // 'personal' | 'client' | 'learning'
+ *   role: { en: 'Frontend development', es: 'Desarrollo frontend' },
+ *   year: 2026,
+ *   name: { en: 'My project', es: 'Mi proyecto' },
+ *   shortDescription: { en: 'Short sentence.', es: 'Frase breve.' },
+ *   longDescription: { en: 'Optional details.', es: 'Detalles opcionales.' },
+ *   technologies: ['React', 'TypeScript'],
+ *   image: workshopCapture,
+ *   imageAlt: { en: 'Workshop project dashboard', es: 'Panel del proyecto de taller' },
+ *   url: 'https://example.com',
+ *   repo: 'https://github.com/example/project',
+ * }
+ */

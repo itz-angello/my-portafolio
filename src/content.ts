@@ -56,6 +56,7 @@ export interface SiteContent {
     [key in Language]: {
       skipToContent: string;
       nav: {
+        label: string;
         home: string;
         about: string;
         portfolio: string;
@@ -64,6 +65,13 @@ export interface SiteContent {
         projects: string;
         skills: string;
         services: string;
+      };
+      metadata: {
+        home: { title: string; description: string };
+        about: { title: string; description: string };
+        portfolio: { title: string; description: string };
+        contact: { title: string; description: string };
+        notFound: { title: string; description: string };
       };
       home: {
         hi: string;
@@ -99,6 +107,16 @@ export interface SiteContent {
         whatIDo: string;
         developCard: { title: string; tags: string[] };
         restoreCard: { title: string; tags: string[] };
+        featuredHeading: string;
+        archiveHeading: string;
+        archiveCount: string;
+        archiveEmpty: string;
+        captureComing: string;
+        visitSite: string;
+        repository: string;
+        role: string;
+        year: string;
+        categories: { all: string; personal: string; client: string; learning: string };
         tabs: {
           projects: string;
           certificates: string;
@@ -195,6 +213,7 @@ export const content: SiteContent = {
     en: {
       skipToContent: "Skip to content",
       nav: {
+        label: "Main navigation",
         home: "Home",
         about: "About",
         portfolio: "Portfolio",
@@ -203,6 +222,28 @@ export const content: SiteContent = {
         projects: "Projects",
         skills: "Skills",
         services: "Services",
+      },
+      metadata: {
+        home: {
+          title: "Angel Chacón — Web Developer in Guatemala",
+          description: "Angel Chacón, web developer in Guatemala. I build fast, responsive websites for small businesses.",
+        },
+        about: {
+          title: "About — Angel Chacón, Web Developer in Guatemala",
+          description: "Learn about Angel Chacón, web developer in Guatemala, his approach and the tools he uses.",
+        },
+        portfolio: {
+          title: "Portfolio — Angel Chacón, Web Developer in Guatemala",
+          description: "Selected web development projects by Angel Chacón, web developer in Guatemala.",
+        },
+        contact: {
+          title: "Contact — Angel Chacón, Web Developer in Guatemala",
+          description: "Contact Angel Chacón, web developer in Guatemala, about your next website project.",
+        },
+        notFound: {
+          title: "Page not found — Angel Chacón",
+          description: "This page was not found. Return to Angel Chacón's web development portfolio in Guatemala.",
+        },
       },
       home: {
         hi: "Hi, I'm Angel",
@@ -258,6 +299,16 @@ export const content: SiteContent = {
           title: "Restore",
           tags: ["Legacy HTML", "CSS fixes", "Mobile bugs", "Speed boost"],
         },
+        featuredHeading: "Featured projects",
+        archiveHeading: "More projects",
+        archiveCount: "{count} projects in archive",
+        archiveEmpty: "More projects will appear here as they are added.",
+        captureComing: "Capture coming soon",
+        visitSite: "Visit site",
+        repository: "View repository",
+        role: "Role",
+        year: "Year",
+        categories: { all: "All", personal: "Personal", client: "Client", learning: "Learning" },
         tabs: {
           projects: "Projects",
           certificates: "Certificates",
@@ -333,6 +384,7 @@ export const content: SiteContent = {
     es: {
       skipToContent: "Saltar al contenido",
       nav: {
+        label: "Navegación principal",
         home: "Inicio",
         about: "Sobre mí",
         portfolio: "Portafolio",
@@ -341,6 +393,28 @@ export const content: SiteContent = {
         projects: "Proyectos",
         skills: "Habilidades",
         services: "Servicios",
+      },
+      metadata: {
+        home: {
+          title: "Angel Chacón — Desarrollador web en Guatemala",
+          description: "Angel Chacón, desarrollador web en Guatemala. Creo sitios rápidos y adaptables para pequeños negocios.",
+        },
+        about: {
+          title: "Sobre mí — Angel Chacón, Desarrollador web en Guatemala",
+          description: "Conoce a Angel Chacón, desarrollador web en Guatemala, su enfoque y las herramientas que usa.",
+        },
+        portfolio: {
+          title: "Portafolio — Angel Chacón, Desarrollador web en Guatemala",
+          description: "Proyectos seleccionados de Angel Chacón, desarrollador web en Guatemala.",
+        },
+        contact: {
+          title: "Contacto — Angel Chacón, Desarrollador web en Guatemala",
+          description: "Contacta a Angel Chacón, desarrollador web en Guatemala, para hablar de tu próximo sitio web.",
+        },
+        notFound: {
+          title: "Página no encontrada — Angel Chacón",
+          description: "No encontramos esta página. Vuelve al portafolio de Angel Chacón, desarrollador web en Guatemala.",
+        },
       },
       home: {
         hi: "Hola, soy Angel",
@@ -396,6 +470,16 @@ export const content: SiteContent = {
           title: "Restauración",
           tags: ["HTML heredado", "Corrección CSS", "Bugs móvil", "Velocidad"],
         },
+        featuredHeading: "Proyectos destacados",
+        archiveHeading: "Más proyectos",
+        archiveCount: "{count} proyectos en archivo",
+        archiveEmpty: "Aquí aparecerán más proyectos cuando se agreguen.",
+        captureComing: "Captura próximamente",
+        visitSite: "Ver sitio",
+        repository: "Ver repositorio",
+        role: "Rol",
+        year: "Año",
+        categories: { all: "Todos", personal: "Personal", client: "Cliente", learning: "Aprendizaje" },
         tabs: {
           projects: "Proyectos",
           certificates: "Certificados",

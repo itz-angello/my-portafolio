@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { content } from '../content';
 import { projectLabels } from '../content/projects';
+import { PageMetadata } from '../components/PageMetadata';
 
 interface ProjectPageProps {
   slug: string;
@@ -20,14 +21,19 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ slug }) => {
 
   if (!project) {
     return (
-      <div className="project-case-wrap flex min-h-[55vh] flex-col items-center justify-center px-6 text-center">
-        <h1 className="font-heading mb-6 text-4xl font-bold text-[var(--color-text)]">{caseT.notFound}</h1>
-        <a href="/portfolio/" className="btn-outline"><ArrowLeft size={16} aria-hidden="true" />{caseT.back}</a>
-      </div>
+      <>
+        <PageMetadata page="notFound" />
+        <div className="project-case-wrap flex min-h-[55vh] flex-col items-center justify-center px-6 text-center">
+          <h1 className="font-heading mb-6 text-4xl font-bold text-[var(--color-text)]">{caseT.notFound}</h1>
+          <a href="/portfolio/" className="btn-outline"><ArrowLeft size={16} aria-hidden="true" />{caseT.back}</a>
+        </div>
+      </>
     );
   }
 
   return (
+    <>
+    <PageMetadata page="project" project={project} />
     <article className="project-case-wrap mx-auto max-w-6xl px-5 pb-24 pt-28 sm:px-8 lg:px-10">
       <motion.header initial={enter} animate={{ opacity: 1, y: 0 }} transition={revealTransition} className="mb-9 sm:mb-12">
         <a href="/portfolio/" className="project-case-back"><ArrowLeft size={16} aria-hidden="true" />{caseT.back}</a>
@@ -42,12 +48,12 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ slug }) => {
         </div>
         <div className="mt-8 flex flex-wrap gap-3">
           {project.url && <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex gap-2">{projectLabels[lang].visitSite}<ArrowUpRight size={16} aria-hidden="true" /></a>}
-          {project.repository && <a href={project.repository} target="_blank" rel="noopener noreferrer" className="btn-outline inline-flex gap-2">{projectLabels[lang].repository}<ArrowUpRight size={16} aria-hidden="true" /></a>}
+          {project.repo && <a href={project.repo} target="_blank" rel="noopener noreferrer" className="btn-outline inline-flex gap-2">{projectLabels[lang].repository}<ArrowUpRight size={16} aria-hidden="true" /></a>}
         </div>
       </motion.header>
 
-      {project.screenshot && <motion.figure initial={enter} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={revealTransition} className="project-case-cover">
-        <img src={project.screenshot} alt={`${project.name[lang]} — ${caseT.galleryAlt}`} width={1200} height={750} loading="lazy" />
+      {project.image && <motion.figure initial={enter} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={revealTransition} className="project-case-cover">
+        <img src={project.image} alt={`${project.name[lang]} — ${caseT.galleryAlt}`} width={1200} height={750} loading="lazy" />
         <figcaption>{caseT.gallery} · 01</figcaption>
       </motion.figure>}
 
@@ -71,5 +77,6 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ slug }) => {
       </motion.section>}
 
     </article>
+    </>
   );
 };

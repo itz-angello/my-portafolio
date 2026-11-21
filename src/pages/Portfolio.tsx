@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { content } from '../content';
 import { ArrowUpRight } from 'lucide-react';
 import { Skills } from '../components/Skills';
-import { projectLabels } from '../content/projects';
 
 // ---- Curtain Transition ----
 const CurtainTransition: React.FC = () => {
@@ -60,17 +59,15 @@ const WhatIDoCard: React.FC<WhatIDoCardProps> = ({ title, tags }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div
-      className="corner-bracket p-6 rounded-xl cursor-pointer transition-colors duration-200"
+    <button
+      type="button"
+      className="corner-bracket w-full rounded-xl p-6 text-left transition-colors duration-200"
       style={{
         background: 'var(--color-surface)',
         border: '1px solid var(--color-surface-2)',
       }}
       onClick={() => setExpanded((v) => !v)}
-      role="button"
       aria-expanded={expanded}
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setExpanded((v) => !v); }}
     >
       <h3
         className="text-xl font-bold mb-3"
@@ -126,73 +123,89 @@ const WhatIDoCard: React.FC<WhatIDoCardProps> = ({ title, tags }) => {
           )}
         </div>
       )}
-    </div>
+    </button>
   );
 };
 
-// ---- Project Card ----
-interface ProjectCardProps {
-  project: typeof content.projects[0];
+// Project cards are data-driven. Adding fields to the project catalog never
+// changes the section layout.
+const FeaturedProjectBlock: React.FC<{
+  project: (typeof content.projects)[number];
   index: number;
-  detailsLabel: string;
-  techLabel: string;
-}
-
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, detailsLabel, techLabel }) => {
+  portfolioT: (typeof content.texts)['en']['portfolio'];
+}> = ({ project, index, portfolioT }) => {
   const { lang } = useLanguage();
   const reduceMotion = useReducedMotion();
-  const tiltX = useSpring(useMotionValue(0), { stiffness: 180, damping: 20, mass: 0.6 });
-  const tiltY = useSpring(useMotionValue(0), { stiffness: 180, damping: 20, mass: 0.6 });
-
-  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (reduceMotion || event.pointerType !== 'mouse') return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    tiltX.set(-y * 7);
-    tiltY.set(x * 9);
-  };
-
-  const resetTilt = () => {
-    tiltX.set(0);
-    tiltY.set(0);
-  };
+  const category = project.category ? portfolioT.categories[project.category] : null;
 
   return (
     <motion.article
-      onPointerMove={handlePointerMove}
-      onPointerLeave={resetTilt}
-      style={{
-        rotateX: reduceMotion ? 0 : tiltX,
-        rotateY: reduceMotion ? 0 : tiltY,
-        transformPerspective: 1100,
-        transformStyle: 'preserve-3d',
-      }}
-      whileHover={reduceMotion ? undefined : { y: -5 }}
-      transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-      className="project-card group relative overflow-hidden rounded-3xl"
+      className={`featured-project${index % 2 === 1 ? ' is-reversed' : ''}`}
+      initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.16 }}
+      transition={{ duration: reduceMotion ? 0 : 0.58, ease: [0.2, 0.7, 0.2, 1] }}
     >
-      <div className="flex h-full flex-col">
-        <a href={`/portfolio/${project.slug}/`} className="flex flex-1 flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]" aria-label={`${project.name[lang]} — ${detailsLabel}`}>
-        {project.screenshot && <div className="project-card-image relative aspect-[16/10] overflow-hidden">
-          <img src={project.screenshot} alt={`${project.name[lang]} — ${lang === 'es' ? 'captura del proyecto' : 'project screenshot'}`} loading="lazy" width={800} height={500} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]" />
-          <div className="project-card-image-shade" />
-          <span className="project-card-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-        </div>}
-        <div className="project-card-body">
-          <div className="mb-2 flex items-start justify-between gap-3">
-            <h3 className="project-card-title">{project.name[lang]}</h3>
-            <ArrowUpRight className="mt-1 shrink-0 text-[var(--color-accent)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" size={20} aria-hidden="true" />
-          </div>
-          <p className="project-card-description">{project.shortDescription[lang]}</p>
-          <div className="project-card-tags" aria-label={techLabel}>
-            {project.technologies.map((tag) => <span key={tag}>{tag}</span>)}
-          </div>
-          <span className="project-card-link">{detailsLabel}</span>
+      <div className="featured-project-copy">
+        <span className="featured-project-number">{String(index + 1).padStart(2, '0')}</span>
+        <div className="featured-project-heading">
+          <h3>{project.name[lang]}</h3>
+          {category && <span className="featured-project-category">{category}</span>}
         </div>
-        </a>
-        {project.url && <a href={project.url} target="_blank" rel="noopener noreferrer" className="service-package-cta mx-5 mb-5">{projectLabels[lang].visitSite}<ArrowUpRight size={16} aria-hidden="true" /></a>}
-        {project.repository && <a href={project.repository} target="_blank" rel="noopener noreferrer" className="service-package-cta mx-5 mb-5">{projectLabels[lang].repository}<ArrowUpRight size={16} aria-hidden="true" /></a>}
+        <p className="featured-project-short">{project.shortDescription[lang]}</p>
+        {project.longDescription && <p className="featured-project-description">{project.longDescription[lang]}</p>}
+        {(project.role || project.year) && (
+          <dl className="featured-project-meta">
+            {project.role && <div><dt>{portfolioT.role}</dt><dd>{project.role[lang]}</dd></div>}
+            {project.year && <div><dt>{portfolioT.year}</dt><dd>{project.year}</dd></div>}
+          </dl>
+        )}
+        <ul className="featured-project-tech" aria-label={content.texts[lang].projectCase.tech}>
+          {project.technologies.map((technology) => <li key={technology}>{technology}</li>)}
+        </ul>
+        <div className="featured-project-links">
+          <a className="btn-outline" href={`/portfolio/${project.slug}/`}>{portfolioT.detailsLink}<ArrowUpRight size={16} aria-hidden="true" /></a>
+          {project.url && <a className="btn-primary" href={project.url} target="_blank" rel="noopener noreferrer">{portfolioT.visitSite}<ArrowUpRight size={16} aria-hidden="true" /></a>}
+          {project.repo && <a className="btn-outline" href={project.repo} target="_blank" rel="noopener noreferrer">{portfolioT.repository}<ArrowUpRight size={16} aria-hidden="true" /></a>}
+        </div>
+      </div>
+      <div className="featured-project-media">
+        {project.image ? (
+          <img src={project.image} alt={project.imageAlt?.[lang] ?? `${project.name[lang]} — ${portfolioT.previewLabel}`} loading="lazy" width={1200} height={760} />
+        ) : (
+          <div className="featured-project-placeholder">
+            <span className="featured-project-placeholder-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <strong>{project.name[lang]}</strong>
+            <span>{portfolioT.captureComing}</span>
+          </div>
+        )}
+      </div>
+    </motion.article>
+  );
+};
+
+const ArchiveProjectCard: React.FC<{
+  project: (typeof content.projects)[number];
+  index: number;
+  portfolioT: (typeof content.texts)['en']['portfolio'];
+}> = ({ project, index, portfolioT }) => {
+  const { lang } = useLanguage();
+  const reduceMotion = useReducedMotion();
+  const category = project.category ? portfolioT.categories[project.category] : null;
+
+  return (
+    <motion.article className="archive-project-card" layout={!reduceMotion}>
+      <span className="archive-project-number">{String(index + 1).padStart(2, '0')}</span>
+      {category && <span className="archive-project-category">{category}</span>}
+      <h3><a href={`/portfolio/${project.slug}/`}>{project.name[lang]}</a></h3>
+      <p>{project.shortDescription[lang]}</p>
+      <ul className="archive-project-tech" aria-label={content.texts[lang].projectCase.tech}>
+        {project.technologies.map((technology) => <li key={technology}>{technology}</li>)}
+      </ul>
+      <div className="archive-project-links">
+        <a href={`/portfolio/${project.slug}/`}>{portfolioT.detailsLink}<ArrowUpRight size={14} aria-hidden="true" /></a>
+        {project.url && <a href={project.url} target="_blank" rel="noopener noreferrer">{portfolioT.visitSite}<ArrowUpRight size={14} aria-hidden="true" /></a>}
+        {project.repo && <a href={project.repo} target="_blank" rel="noopener noreferrer">{portfolioT.repository}<ArrowUpRight size={14} aria-hidden="true" /></a>}
       </div>
     </motion.article>
   );
@@ -289,7 +302,11 @@ export const PortfolioPage: React.FC = () => {
   const reduceMotion = useReducedMotion();
   const portfolioT = content.texts[lang].portfolio;
   const [activeTab, setActiveTab] = useState<Tab>('projects');
+  const [activeCategory, setActiveCategory] = useState<'all' | 'personal' | 'client' | 'learning'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const featuredProjects = content.projects.filter((project) => project.featured).slice(0, 3);
+  const archiveProjects = content.projects.filter((project) => !project.featured);
+  const visibleArchiveProjects = archiveProjects.filter((project) => activeCategory === 'all' || project.category === activeCategory);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'projects', label: portfolioT.tabs.projects },
@@ -362,20 +379,47 @@ export const PortfolioPage: React.FC = () => {
           {activeTab === 'projects' && (
             <motion.div
               key="projects"
-              initial={{ opacity: 0, y: 10 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              exit={reduceMotion ? undefined : { opacity: 0, y: -10 }}
+              transition={{ duration: reduceMotion ? 0 : 0.2 }}
             >
-              {content.projects.length > 0 ? (
-                <div className="grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
-                  {content.projects.map((project, index) => (
-                    <motion.div key={project.slug} initial={reduceMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: 0.55, delay: reduceMotion ? 0 : index * 0.09, ease: [0.2, 0.7, 0.2, 1] }}>
-                      <ProjectCard project={project} index={index} detailsLabel={portfolioT.detailsLink} techLabel={content.texts[lang].projectCase.tech} />
-                    </motion.div>
-                  ))}
+              <section className="featured-projects-section" aria-labelledby="featured-projects-heading">
+                <h2 id="featured-projects-heading" className="project-section-title">{portfolioT.featuredHeading}</h2>
+                <div className="featured-projects-list">
+                  {featuredProjects.map((project, index) => <FeaturedProjectBlock key={project.slug} project={project} index={index} portfolioT={portfolioT} />)}
                 </div>
-              ) : null}
+              </section>
+
+              <section className="project-archive-section" aria-labelledby="project-archive-heading">
+                <header className="project-archive-header">
+                  <div>
+                    <h2 id="project-archive-heading" className="project-section-title">{portfolioT.archiveHeading}</h2>
+                    <p className="project-archive-count" aria-live="polite">{portfolioT.archiveCount.replace('{count}', String(visibleArchiveProjects.length))}</p>
+                  </div>
+                  <div className="project-archive-filters" role="group" aria-label={portfolioT.archiveHeading}>
+                    {(['all', 'personal', 'client', 'learning'] as const).map((category) => (
+                      <button
+                        type="button"
+                        key={category}
+                        className={`project-archive-filter${activeCategory === category ? ' is-active' : ''}`}
+                        aria-pressed={activeCategory === category}
+                        onClick={() => setActiveCategory(category)}
+                      >
+                        {portfolioT.categories[category]}
+                      </button>
+                    ))}
+                  </div>
+                </header>
+                <div className="project-archive-grid" aria-live="polite">
+                  <AnimatePresence mode="popLayout">
+                    {visibleArchiveProjects.map((project, index) => (
+                      <ArchiveProjectCard key={project.slug} project={project} index={index + 1} portfolioT={portfolioT} />
+                    ))}
+                  </AnimatePresence>
+                  {visibleArchiveProjects.length === 0 && <p className="project-archive-empty">{portfolioT.archiveEmpty}</p>}
+                </div>
+              </section>
             </motion.div>
           )}
 
@@ -391,7 +435,8 @@ export const PortfolioPage: React.FC = () => {
               {content.certificates.length > 0 ? (
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {content.certificates.map((cert, i) => (
-                    <div
+                    <button
+                      type="button"
                       key={cert.id}
                       className="card rounded-2xl p-5 cursor-pointer hover:-translate-y-1 transition-transform duration-200"
                       style={{
@@ -399,9 +444,6 @@ export const PortfolioPage: React.FC = () => {
                         border: '1px solid var(--color-surface-2)',
                       }}
                       onClick={() => setLightboxIndex(i)}
-                      tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter') setLightboxIndex(i); }}
-                      role="button"
                       aria-label={`View ${cert.name} certificate`}
                     >
                       <h3
@@ -416,7 +458,7 @@ export const PortfolioPage: React.FC = () => {
                       <p className="text-xs mt-1" style={{ color: 'var(--color-muted)' }}>
                         {cert.date}
                       </p>
-                    </div>
+                    </button>
                   ))}
                 </div>
               ) : (

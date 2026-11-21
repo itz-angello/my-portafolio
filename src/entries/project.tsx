@@ -11,7 +11,7 @@ const slug = routeParts[routeParts.length - 1] ?? '';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <LanguageProvider>
-      <Layout currentPage="portfolio">
+      <Layout currentPage="portfolio" metadataPage={null}>
         <ProjectPage slug={slug} />
       </Layout>
     </LanguageProvider>

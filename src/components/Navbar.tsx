@@ -50,14 +50,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
           maxWidth: '600px',
           width: '100%',
         }}
-        aria-label="Main navigation"
+        aria-label={t.nav.label}
       >
         {/* Logo — hidden on mobile */}
         <a
           href="/"
           className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full font-heading text-xs font-bold tracking-[0.08em] sm:mr-1 sm:h-9 sm:w-9 sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
           style={{ background: 'var(--color-accent)', color: 'var(--color-ink)' }}
-          aria-label="Angel Chacón — Home"
+          aria-label="AC — Angel Chacón — Home"
         >
           AC
         </a>
@@ -93,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
             border: '1px solid var(--color-muted)',
             color: 'var(--color-soft)',
           }}
-          aria-label={`Switch to ${lang === 'en' ? 'Spanish' : 'English'}`}
+          aria-label={`${lang === 'en' ? 'ES' : 'EN'} — Switch to ${lang === 'en' ? 'Spanish' : 'English'}`}
         >
           {lang === 'en' ? 'ES' : 'EN'}
         </button>

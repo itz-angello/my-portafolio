@@ -47,8 +47,8 @@ export const HomePage: React.FC = () => {
         <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.92, x: 18 }} animate={{ opacity: 1, scale: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.28, ease: [0.16, 1, 0.3, 1] }} className="forge-art relative mx-auto grid aspect-square w-full max-w-[27rem] place-items-center lg:ml-auto" aria-label={hero.visualCaption}>
           <div className="forge-orbit forge-orbit-one" aria-hidden="true" />
           <div className="forge-orbit forge-orbit-two" aria-hidden="true" />
-          {content.projects[0]?.screenshot
-            ? <img className="forge-sun project-hero-capture" src={content.projects[0].screenshot} alt={`${content.projects[0].name[lang]} — ${lang === 'es' ? 'captura del proyecto' : 'project screenshot'}`} loading="lazy" />
+          {content.projects[0]?.image
+            ? <img className="forge-sun project-hero-capture" src={content.projects[0].image} alt={`${content.projects[0].name[lang]} — ${lang === 'es' ? 'captura del proyecto' : 'project screenshot'}`} loading="lazy" />
             : <div className="forge-sun" aria-hidden="true"><span>AC</span></div>}
           <Sparkles className="forge-spark forge-spark-one" size={22} aria-hidden="true" />
           <Sparkles className="forge-spark forge-spark-two" size={15} aria-hidden="true" />

@@ -67,22 +67,27 @@ Los nombres y descripciones de proyectos se editan en `src/content/projects.ts`.
 
 ## Agregar un proyecto
 
-Añade un objeto a `projects` en `src/content/projects.ts`. Las propiedades de texto tienen versiones `en` y `es`; `longDescription`, `screenshot`, `url` y `repository` son opcionales.
+Añade un objeto a `projects` en `src/content/projects.ts`. Los destacados se ordenan automáticamente y se muestran hasta tres. Los demás aparecen en el archivo con filtros por categoría. Los textos tienen versiones `en` y `es`; `category`, `role`, `year`, `image`, `imageAlt`, `url` y `repo` son opcionales. Usa una imagen importada desde `src/assets/` para que Vite la incluya en el build.
 
 ```ts
 {
   slug: 'mi-proyecto', // crea /portfolio/mi-proyecto/
   name: { en: 'My project', es: 'Mi proyecto' },
   shortDescription: { en: 'Short summary.', es: 'Resumen breve.' },
-  longDescription: { en: 'More detail.', es: 'Más detalles.' },
+  longDescription: { en: 'More detail.', es: 'Más detalles.' }, // opcional
   technologies: ['React', 'TypeScript'],
-  screenshot: myProjectScreenshot, // opcional; importar desde src/assets/
+  featured: false,
+  category: 'personal', // personal, client o learning
+  role: { en: 'Frontend development', es: 'Desarrollo frontend' }, // opcional
+  year: 2026, // opcional
+  image: myProjectScreenshot, // opcional; importar desde src/assets/
+  imageAlt: { en: 'Project dashboard', es: 'Panel del proyecto' }, // opcional
   url: 'https://example.com', // opcional; muestra “Ver sitio”
-  repository: 'https://github.com/example/repo', // opcional
+  repo: 'https://github.com/example/repo', // opcional; muestra “Ver repositorio”
 }
 ```
 
-Para añadir una captura, impórtala al inicio de `projects.ts`, por ejemplo `import myProjectScreenshot from '../assets/mi-proyecto.webp';`, y asígnala a `screenshot`. Sin captura, se muestra una tarjeta limpia con nombre y tecnologías. Las tarjetas y fichas se generan desde el catálogo.
+Para añadir una captura, impórtala al inicio de `projects.ts`, por ejemplo `import myProjectScreenshot from '../assets/projects/mi-proyecto.webp';`, y asígnala a `image`. Sin captura, el destacado muestra un marco con el nombre y “Captura próximamente”. El archivo `projects.ts` incluye un ejemplo comentado. Las secciones, enlaces y fichas se generan desde el catálogo.
 
 ## Publicar
 

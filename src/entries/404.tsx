@@ -8,7 +8,7 @@ import { NotFoundPage } from '../pages/NotFound';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <LanguageProvider>
-      <Layout currentPage="home">
+      <Layout currentPage="home" metadataPage="notFound">
         <NotFoundPage />
       </Layout>
     </LanguageProvider>
