@@ -116,6 +116,7 @@ export interface SiteContent {
         liveButton: string;
         previewLabel: string;
         detailsLink: string;
+        workIntroLabel: string;
       };
       projectCase: {
         back: string;
@@ -320,6 +321,7 @@ export const content: SiteContent = {
         liveButton: "Live project",
         previewLabel: "View project details",
         detailsLink: "Details →",
+        workIntroLabel: "WORK",
       },
       projectCase: {
         back: "Back to portfolio",
@@ -504,6 +506,7 @@ export const content: SiteContent = {
         liveButton: "Ver proyecto",
         previewLabel: "Ver detalles del proyecto",
         detailsLink: "Detalles →",
+        workIntroLabel: "WORK",
       },
       projectCase: {
         back: "Volver al portafolio",

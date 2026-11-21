@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { content } from '../content';
+import { WorkIntro } from '../components/WorkIntro';
 
 type ProjectRecord = (typeof content.projects)[number];
 type ArchiveFilter = 'all' | 'personal' | 'client' | 'learning';
@@ -118,7 +119,9 @@ export const PortfolioPage: React.FC = () => {
   const filters: ArchiveFilter[] = ['all', 'personal', 'client', 'learning'];
 
   return (
-    <div className="site-container site-page">
+    <>
+      <WorkIntro label={portfolioT.workIntroLabel} />
+      <div className="site-container site-page">
       <h1 className="project-section-title">{portfolioT.heading}</h1>
       <section className="featured-projects-section" aria-labelledby="featured-projects-heading">
         <h2 id="featured-projects-heading" className="project-section-title">{portfolioT.featuredHeading}</h2>
@@ -160,5 +163,6 @@ export const PortfolioPage: React.FC = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
