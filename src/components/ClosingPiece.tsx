@@ -293,7 +293,7 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
   }, [imageSrc]);
 
   return (
-    <section className="closing-piece-zone site-container" data-cursor-cross aria-label={label}>
+    <section className="closing-piece-zone site-container" aria-label={label}>
       <header className="closing-piece-heading">
         <span>{owner}</span>
         <span>{location}</span>

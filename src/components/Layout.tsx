@@ -2,7 +2,6 @@ import React from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { Loader } from './Loader';
-import { CursorOrb } from './CursorOrb';
 import { content } from '../content';
 import { MetadataPage, PageMetadata } from './PageMetadata';
 
@@ -20,7 +19,6 @@ export const Layout: React.FC<LayoutProps> = ({ currentPage, metadataPage, child
     <>
       {resolvedMetadataPage && <PageMetadata page={resolvedMetadataPage} />}
       <Loader />
-      <CursorOrb />
       {/* Skip to content link */}
       <a
         href="#main-content"

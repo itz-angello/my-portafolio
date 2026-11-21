@@ -34,6 +34,11 @@ body {
   min-height: 100vh;
 }
 
+a,
+button {
+  cursor: pointer;
+}
+
 /* Overlay to dim the dot grid */
 body::before {
   content: '';
@@ -512,10 +517,8 @@ body::before {
 .home-summary-copy h2 span { display: block; }
 .home-summary-copy .home-summary-accent { margin-top: .2em; color: var(--color-accent); white-space: nowrap; }
 .home-summary-copy > p { max-width: 44rem; margin: 1.35rem auto 0; color: var(--color-soft); font-size: clamp(.95rem, 2vw, 1.15rem); line-height: 1.7; }
-.custom-cursor.is-cross { border-radius: 0; background: transparent !important; mix-blend-mode: normal !important; }
-.custom-cursor.is-cross::before,.custom-cursor.is-cross::after { position: absolute; top: 50%; left: 50%; display: block; background: var(--color-accent); content: ''; transform: translate(-50%, -50%); }
-.custom-cursor.is-cross::before { width: 18px; height: 2px; }
-.custom-cursor.is-cross::after { width: 2px; height: 18px; }
+/* Cruz nativa cuando el cursor entra en la pieza ASCII */
+.closing-piece-zone { cursor: crosshair; }
 
 @media (max-width: 639px) {
   .closing-piece-heading { gap: .45rem; font-size: .54rem; letter-spacing: .04em; white-space: nowrap; }
