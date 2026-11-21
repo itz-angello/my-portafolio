@@ -47,14 +47,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 pointer-events-none">
+    <header className="fixed inset-x-0 top-3 z-50 flex justify-center pointer-events-none">
       <nav
-        className="pointer-events-auto relative flex w-full items-center gap-1 rounded-full px-2 py-2 sm:gap-1 sm:px-2"
+        className="site-container site-nav pointer-events-auto relative flex items-center gap-1 rounded-full px-2 py-2 sm:gap-1 sm:px-2"
         style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-surface-2)',
-          maxWidth: '72rem',
-          width: '100%',
         }}
         aria-label={t.nav.label}
       >

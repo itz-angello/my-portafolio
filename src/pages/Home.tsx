@@ -14,10 +14,10 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <section className="forge-hero relative flex min-h-[calc(100svh-5rem)] items-center overflow-hidden px-0 pb-14 pt-24 sm:py-14" aria-labelledby="home-title">
+      <section className="forge-hero relative flex items-center overflow-hidden" aria-labelledby="home-title">
         <EmberCanvas />
         <div className="forge-vignette" aria-hidden="true" />
-        <div className="site-container relative z-10 grid items-center gap-12 lg:grid-cols-[1.08fr_.92fr] lg:gap-10">
+        <div className="site-container hero-grid relative z-10">
         <div className="relative">
           <motion.p initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.12 }} className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-bg)]/85 px-4 py-2 text-xs font-semibold tracking-wide text-[var(--color-soft)] shadow-lg shadow-black/20 sm:text-sm">
             <span className="forge-status-dot" aria-hidden="true" />{hero.badge}
@@ -27,7 +27,7 @@ export const HomePage: React.FC = () => {
             <span className="block overflow-hidden pb-2 text-[clamp(2.5rem,6vw,5rem)] text-[var(--color-soft)]">
               {Array.from(hero.headingLead).map((letter, index) => <motion.span key={`${letter}-${index}`} aria-hidden="true" initial={reduceMotion ? false : { opacity: 0, y: '110%' }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.52, delay: reduceMotion ? 0 : 0.18 + index * 0.055, ease: [0.2, 0.8, 0.2, 1] }} className="inline-block">{letter === ' ' ? '\u00a0' : letter}</motion.span>)}
             </span>
-            <span className="forge-name block whitespace-nowrap overflow-hidden pb-3 text-[clamp(4.5rem,12vw,10rem)] text-[var(--color-text)]">
+            <span className="forge-name block whitespace-nowrap overflow-hidden pb-3 text-[var(--color-text)]">
               {nameLetters.map((letter, index) => <motion.span key={`${letter}-${index}`} aria-hidden="true" initial={reduceMotion ? false : { opacity: 0, y: '115%', rotateX: -35 }} animate={{ opacity: 1, y: 0, rotateX: 0 }} transition={{ duration: 0.7, delay: reduceMotion ? 0 : 0.34 + index * 0.075, ease: [0.16, 1, 0.3, 1] }} className="inline-block">{letter}</motion.span>)}
             </span>
           </h1>
@@ -46,7 +46,7 @@ export const HomePage: React.FC = () => {
           <p className="mt-6 flex flex-wrap items-center gap-2 font-mono text-[10px] text-[var(--color-muted)] sm:mt-7 sm:text-xs"><Code2 size={15} aria-hidden="true" />{home.roles.join(' · ')}</p>
         </div>
 
-        <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.92, x: 18 }} animate={{ opacity: 1, scale: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.28, ease: [0.16, 1, 0.3, 1] }} className="forge-art relative mx-auto grid aspect-square w-full max-w-[27rem] place-items-center lg:ml-auto" aria-label={hero.visualCaption}>
+        <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.92, x: 18 }} animate={{ opacity: 1, scale: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.28, ease: [0.16, 1, 0.3, 1] }} className="forge-art relative grid aspect-square w-full max-w-[27rem] place-items-center" aria-label={hero.visualCaption}>
           <div className="forge-orbit forge-orbit-one" aria-hidden="true" />
           <div className="forge-orbit forge-orbit-two" aria-hidden="true" />
           {content.projects[0]?.image

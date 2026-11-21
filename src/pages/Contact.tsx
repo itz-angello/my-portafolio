@@ -32,7 +32,7 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="site-container site-container-narrow pb-24 pt-24">
+    <div className="site-container site-container-narrow site-page">
       <h1
         className="text-4xl sm:text-5xl font-bold mb-4"
         style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-text)' }}

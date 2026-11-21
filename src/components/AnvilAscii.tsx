@@ -160,7 +160,7 @@ export const AnvilAscii: React.FC<{ label: string }> = ({ label }) => {
   }, [prefersReducedMotion]);
 
   return (
-    <div className="anvil-ascii-zone" data-cursor-cross>
+    <div className="anvil-ascii-zone site-container" data-cursor-cross>
       <canvas ref={canvasRef} className="anvil-ascii-canvas" role="img" aria-label={label} />
     </div>
   );

@@ -8,7 +8,7 @@ export const CertificatesPage: React.FC = () => {
 
   return (
     <>
-      <section className="site-container min-h-[60vh] pb-24 pt-24" aria-labelledby="certificates-heading">
+      <section className="site-container site-page" aria-labelledby="certificates-heading">
         <h1 id="certificates-heading" className="font-heading text-4xl font-bold text-[var(--color-text)] sm:text-6xl">{t.certificates.heading}</h1>
         {certificates.length === 0 ? (
           <div className="mt-8 rounded-2xl border border-dashed border-[var(--color-muted)]/40 bg-[var(--color-surface)] px-6 py-14 text-center text-lg text-[var(--color-muted)]">

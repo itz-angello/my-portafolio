@@ -9,6 +9,10 @@
    ============================================= */
 :root {
   color-scheme: dark;
+  --site-max-width: 75rem;
+  --site-gutter-pair: clamp(2.5rem, 6vw, 4rem);
+  --menu-height: 3.5rem;
+  --section-space: clamp(4rem, 8vw, 7rem);
 }
 
 html {
@@ -379,7 +383,7 @@ body::before {
 }
 
 /* Workshop skills */
-.workshop-section { max-width: 82rem; margin: 0 auto; padding: clamp(1.2rem, 4vw, 2rem) 0; }
+.workshop-section { max-width: 100%; margin: 0; padding: 0; }
 .workshop-header { max-width: 48rem; margin-bottom: 1.5rem; }
 .workshop-stamp,.service-packages-stamp,.about-profile-eyebrow { display: inline-flex; align-items: center; gap: .55rem; border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--color-surface) 74%, transparent); color: var(--color-accent); font: 500 .7rem var(--font-mono); letter-spacing: .08em; padding: .45rem .72rem; text-transform: uppercase; }
 .workshop-header h1 { margin-top: 1rem; color: var(--color-text); font: 700 clamp(2rem, 6vw, 3.5rem)/1 var(--font-heading); letter-spacing: -.06em; }
@@ -433,8 +437,8 @@ body::before {
 .about-real-stat span { color: var(--color-soft); font-size: .7rem; }
 
 /* Service packages */
-.service-packages { margin-top: 1rem; border-top: 1px solid color-mix(in srgb, var(--color-muted) 25%, transparent); background: linear-gradient(180deg,color-mix(in srgb,var(--color-surface) 22%,transparent),transparent); padding: clamp(3rem, 8vw, 6rem) 1.25rem; }
-.service-packages-inner { max-width: 82rem; margin: 0 auto; }
+.service-packages { margin-top: 0; border-top: 1px solid color-mix(in srgb, var(--color-muted) 25%, transparent); background: linear-gradient(180deg,color-mix(in srgb,var(--color-surface) 22%,transparent),transparent); padding-block: var(--section-space); }
+.service-packages-inner { width: 100%; max-width: var(--site-max-width); margin: 0 auto; }
 .service-packages-header { max-width: 48rem; margin-bottom: 1.5rem; }
 .service-packages-header h2 { margin-top: 1rem; color: var(--color-text); font: 700 clamp(2rem, 6vw, 3.5rem)/1 var(--font-heading); letter-spacing: -.06em; }
 .service-packages-header p { margin-top: .75rem; color: var(--color-soft); font-size: .95rem; line-height: 1.65; }
@@ -472,15 +476,21 @@ body::before {
   .workshop-tool,.service-package-cta { transition: none; }
 }
 
-/* Shared page frame and home close */
-.site-container { width: min(100%, 72rem); margin-inline: auto; padding-inline: clamp(1.25rem, 3vw, 2rem); }
+/* Shared centered frame and vertical rhythm */
+.site-container { box-sizing: border-box; width: calc(100% - var(--site-gutter-pair)); max-width: var(--site-max-width); margin-inline: auto; }
+.site-nav { min-height: var(--menu-height); }
+.site-page { padding-block: calc(var(--menu-height) + 1.5rem) var(--section-space); }
+.about-profile.site-page { padding-bottom: 0; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: clamp(2rem, 5vw, 4rem); }
+.forge-hero { min-height: calc(100svh - var(--menu-height)); box-sizing: border-box; padding-top: calc(var(--menu-height) + 1.5rem); padding-bottom: 1.5rem; }
+.forge-art { margin-inline: auto; }
+.forge-name { font-size: clamp(4rem, 9vw, 8rem); }
+.site-page > :first-child { scroll-margin-top: calc(var(--menu-height) + 1.5rem); }
 .site-container-narrow { max-width: 44rem; }
-.workshop-section,.service-packages-inner { max-width: 72rem; }
-.workshop-section { padding-block: 0; }
 
-.anvil-ascii-zone { display: grid; min-height: 13rem; place-items: center; margin: .75rem auto 0; padding-block: .5rem; }
+.anvil-ascii-zone { display: grid; place-items: center; }
 .anvil-ascii-canvas { display: block; width: 100%; height: clamp(11rem, 28vw, 16rem); overflow: visible; }
-.home-summary { padding-top: clamp(2rem, 5vw, 3.5rem); padding-bottom: clamp(3.5rem, 8vw, 6rem); }
+.home-summary { padding-block: var(--section-space); }
 .home-summary-copy { max-width: 64rem; margin-inline: auto; text-align: center; }
 .home-summary-copy h2 { color: var(--color-text); font: 800 clamp(1.5rem, 5.8vw, 4.2rem)/1.02 var(--font-heading); letter-spacing: -.065em; }
 .home-summary-copy h2 span { display: block; }
@@ -511,6 +521,16 @@ body::before {
   background:
     radial-gradient(ellipse at 76% 52%, color-mix(in srgb, var(--color-forge-deep) 35%, transparent), transparent 38%),
     linear-gradient(120deg, rgb(13 22 28 / 84%), rgb(27 45 58 / 40%) 55%, rgb(75 34 20 / 20%));
+}
+
+@media (min-width: 1024px) {
+  .hero-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 4vw, 4rem); }
+  .forge-art { margin-left: auto; margin-right: 0; }
+}
+
+@media (max-width: 639px) {
+  .forge-hero { padding-top: calc(var(--menu-height) + 1.5rem); padding-bottom: 2.5rem; }
+  .forge-art { width: min(100%, 20rem); }
 }
 
 .ember-canvas,

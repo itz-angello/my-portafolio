@@ -11,7 +11,7 @@ export const Services: React.FC = () => {
 
   return (
     <section id="services" className="service-packages" aria-labelledby="services-title">
-      <div className="service-packages-inner">
+      <div className="service-packages-inner site-container">
         <motion.header initial={reduceMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.5 }} className="service-packages-header">
           <span className="service-packages-stamp"><PackageOpen size={15} aria-hidden="true" />{t.services.badge}</span>
           <h2 id="services-title">{t.services.heading}</h2>

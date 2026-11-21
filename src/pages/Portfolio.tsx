@@ -98,7 +98,7 @@ export const PortfolioPage: React.FC = () => {
   const filters: ArchiveFilter[] = ['all', 'personal', 'client', 'learning'];
 
   return (
-    <div className="site-container pb-24 pt-24">
+    <div className="site-container site-page">
       <h1 className="project-section-title">{portfolioT.heading}</h1>
       <section className="featured-projects-section" aria-labelledby="featured-projects-heading">
         <h2 id="featured-projects-heading" className="project-section-title">{portfolioT.featuredHeading}</h2>

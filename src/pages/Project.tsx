@@ -34,7 +34,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ slug }) => {
   return (
     <>
     <PageMetadata page="project" project={project} />
-    <article className="project-case-wrap site-container pb-24 pt-24">
+    <article className="project-case-wrap site-container site-page">
       <motion.header initial={enter} animate={{ opacity: 1, y: 0 }} transition={revealTransition} className="mb-9 sm:mb-12">
         <a href="/portfolio/" className="project-case-back"><ArrowLeft size={16} aria-hidden="true" />{caseT.back}</a>
         <div className="mt-8 flex flex-wrap items-center gap-3">
