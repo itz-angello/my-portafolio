@@ -13,9 +13,12 @@ interface CharacterCell {
   offsetX: number;
   offsetY: number;
   hover: number;
+  backgroundGlyph: string;
+  opening: boolean;
 }
 
 const DENSITY_RAMP = ' .:-=+*#%@';
+const BACKGROUND_GLYPHS = '01{}[]<>/\\:;+=_';
 const CELL_SIZE = 10;
 const INTERACTION_RADIUS = 90;
 
@@ -45,7 +48,7 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
     let baseFrame: ImageData | null = null;
     let pointer = { x: -1000, y: -1000, active: false };
 
-    const accent = getComputedStyle(canvas).getPropertyValue('--color-accent').trim() || '#f18b45';
+    const accent = getComputedStyle(canvas).getPropertyValue('--color-forge').trim() || '#e98245';
     const textColor = getComputedStyle(canvas).getPropertyValue('--color-soft').trim() || '#aab9bd';
     const monoFont = getComputedStyle(canvas).getPropertyValue('--font-mono').trim() || 'monospace';
     const toRgb = (color: string) => {
@@ -71,7 +74,10 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
       sourceContext.lineTo(width * 0.37, height * 0.57);
       sourceContext.stroke();
       sourceContext.beginPath();
-      sourceContext.ellipse(width * 0.70, height * 0.50, width * 0.155, height * 0.315, 0, -Math.PI / 4, -7 * Math.PI / 4, true);
+      const radiusX = width * 0.155;
+      const radiusY = height * 0.315;
+      const openingHalfAngle = Math.atan2(radiusX * Math.sin(Math.PI / 6), radiusY * Math.cos(Math.PI / 6));
+      sourceContext.ellipse(width * 0.70, height * 0.50, radiusX, radiusY, 0, -openingHalfAngle, -2 * Math.PI + openingHalfAngle, true);
       sourceContext.stroke();
     };
 
@@ -117,7 +123,13 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
           }
 
           const brightness = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / (samples * 255);
-          cells.push({ x, y, brightness, offsetX: 0, offsetY: 0, hover: 0 });
+          const openingX = x - width * 0.70;
+          const openingY = Math.abs(y - height * 0.50);
+          const opening = openingX > width * 0.155 * 0.68 && openingY < openingX * Math.tan(Math.PI / 6);
+          const backgroundGlyph = opening
+            ? ((row + column) % 2 === 0 ? '·' : '.')
+            : BACKGROUND_GLYPHS[(row * 17 + column * 31) % BACKGROUND_GLYPHS.length];
+          cells.push({ x, y, brightness, offsetX: 0, offsetY: 0, hover: 0, backgroundGlyph, opening });
         }
       }
       renderBase();
@@ -125,11 +137,11 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
     };
 
     const drawCharacter = (cell: CharacterCell, brightness: number, x: number, y: number) => {
+      const isLetter = brightness >= 0.055;
       const rampIndex = Math.min(DENSITY_RAMP.length - 1, Math.floor(brightness * (DENSITY_RAMP.length - 1)));
-      const character = DENSITY_RAMP[rampIndex];
-      if (character === ' ' || brightness < 0.055) return;
-      context.globalAlpha = Math.min(1, 0.45 + brightness * 0.55);
-      const amount = cell.hover * 0.78;
+      const character = isLetter ? DENSITY_RAMP[Math.max(3, rampIndex)] : cell.backgroundGlyph;
+      context.globalAlpha = isLetter ? Math.min(1, 0.5 + brightness * 0.5) : cell.opening ? 0.08 : 0.15;
+      const amount = isLetter ? cell.hover * 0.78 : 0;
       const rgb = baseRgb.map((channel, index) => Math.round(channel + (accentRgb[index] - channel) * amount));
       context.fillStyle = `rgb(${rgb.join(' ')})`;
       context.fillText(character, x, y);
@@ -159,7 +171,7 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
         for (let row = minRow; row <= maxRow; row += 1) {
           for (let column = minColumn; column <= maxColumn; column += 1) {
             const cell = cells[row * columns + column];
-            if (cell?.brightness >= 0.055) candidates.add(cell);
+            if (cell) candidates.add(cell);
           }
         }
       }

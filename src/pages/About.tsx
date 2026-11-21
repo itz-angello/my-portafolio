@@ -44,14 +44,33 @@ const AnimatedAboutIntro: React.FC<{ intro: AboutIntroCopy }> = ({ intro }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
   const initialOpacity = useTransform(scrollYProgress, [0, 0.18, 0.28, 0.38], [1, 1, 0.7, 0]);
-  const initialScale = useTransform(scrollYProgress, [0, 0.2, 0.38], [0.94, 1.04, 1.2]);
   const phraseOpacity = useTransform(scrollYProgress, [0.58, 0.67, 0.86, 0.97, 1], [0, 1, 1, 0.8, 0.25]);
   const phraseScale = useTransform(scrollYProgress, [0.6, 0.78], [0.94, 1]);
 
   return (
     <section ref={sectionRef} className="about-intro-scroll" aria-label={intro.phrase}>
       <div className="about-intro-sticky">
-        <motion.h1 className="about-intro-first" aria-hidden="true" style={{ opacity: initialOpacity, scale: initialScale, rotate: -6 }}>{intro.initialWord}</motion.h1>
+        <motion.h1
+          className="about-intro-first"
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '17%',
+            left: '8%',
+            right: 'auto',
+            bottom: 'auto',
+            width: 'max-content',
+            maxWidth: '84vw',
+            margin: 0,
+            fontSize: 'clamp(1.75rem, 4.5vw, 3.5rem)',
+            textAlign: 'left',
+            transformOrigin: 'left center',
+            opacity: initialOpacity,
+            rotate: -6,
+          }}
+        >
+          {intro.initialWord}
+        </motion.h1>
         <div className="about-intro-embers" aria-hidden="true">
           {intro.words.map((word, index) => <ScrollingEmber key={`${word.text}-${index}`} word={word} progress={scrollYProgress} />)}
         </div>
