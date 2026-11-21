@@ -69,6 +69,24 @@ texts: {
 
 Los nombres y descripciones de proyectos se editan en `src/content/projects.ts`.
 
+## Cambiar la imagen de la pieza de cierre
+
+La zona interactiva al final de Inicio genera el monograma `AC` automáticamente. Cuando tengas una foto, guárdala en `src/assets/foto.jpg` (puede ser un retrato o una foto de tus manos), impórtala en `src/pages/Home.tsx` y pásala al componente:
+
+```tsx
+import { ClosingPiece } from '../components/ClosingPiece';
+import portrait from '../assets/foto.jpg';
+
+<ClosingPiece
+  imageSrc={portrait}
+  label={home.closingPiece.label}
+  owner={home.closingPiece.owner}
+  location={home.closingPiece.location}
+/>
+```
+
+La imagen se convierte en caracteres en el canvas; el texto de cabecera y la descripción accesible se editan por idioma en `src/content.ts`.
+
 ## Agregar un proyecto
 
 Añade un objeto a `projects` en `src/content/projects.ts`. Los destacados se ordenan automáticamente y se muestran hasta tres. Los demás aparecen en el archivo con filtros por categoría. Los textos tienen versiones `en` y `es`; `category`, `role`, `year`, `image`, `imageAlt`, `url` y `repo` son opcionales. Usa una imagen importada desde `src/assets/` para que Vite la incluya en el build.

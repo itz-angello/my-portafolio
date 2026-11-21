@@ -73,7 +73,7 @@ export interface SiteContent {
         viewProjects: string;
         contactMe: string;
         roles: string[];
-        anvilLabel: string;
+        closingPiece: { label: string; owner: string; location: string };
         summary: { heading: string; accent: string; description: string };
       };
       hero: {
@@ -255,7 +255,11 @@ export const content: SiteContent = {
         viewProjects: "View projects",
         contactMe: "Contact me",
         roles: ["Web Developer", "Website restoration", "Freelance projects"],
-        anvilLabel: "Original ASCII illustration of an anvil and hammer. Move the mouse over it to move the characters.",
+        closingPiece: {
+          label: "Character-art halftone of the AC monogram with interactive light and shadow.",
+          owner: "ANGEL CHACÓN · CLOSING PIECE",
+          location: "Guatemala City",
+        },
         summary: {
           heading: "In summary, I'm...",
           accent: "a web developer.",
@@ -435,7 +439,11 @@ export const content: SiteContent = {
         viewProjects: "Ver proyectos",
         contactMe: "Contáctame",
         roles: ["Desarrollador web", "Restauración de sitios", "Proyectos freelance"],
-        anvilLabel: "Ilustración ASCII original de un yunque y un martillo. Mueve el cursor encima para desplazar los caracteres.",
+        closingPiece: {
+          label: "Semitono tipográfico del monograma AC con luces y sombras interactivas.",
+          owner: "ANGEL CHACÓN · PIEZA DE CIERRE",
+          location: "Ciudad de Guatemala",
+        },
         summary: {
           heading: "En resumen soy...",
           accent: "desarrollador web.",

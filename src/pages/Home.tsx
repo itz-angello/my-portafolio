@@ -4,7 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { content } from '../content';
 import { ArrowDownRight, ArrowUpRight, Code2, Sparkles } from 'lucide-react';
 import { EmberCanvas } from '../components/EmberCanvas';
-import { AnvilAscii } from '../components/AnvilAscii';
+import { ClosingPiece } from '../components/ClosingPiece';
 
 export const HomePage: React.FC = () => {
   const { lang } = useLanguage();
@@ -60,7 +60,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <AnvilAscii label={home.anvilLabel} />
+      <ClosingPiece label={home.closingPiece.label} owner={home.closingPiece.owner} location={home.closingPiece.location} />
 
       <section className="site-container home-summary" aria-labelledby="home-summary-title">
         <div className="home-summary-copy">

@@ -27,9 +27,9 @@ export const CursorOrb: React.FC = () => {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target;
       if (!(target instanceof Element)) return;
-      const overAnvil = Boolean(target.closest('[data-cursor-cross]'));
-      orbRef.current?.classList.toggle('is-cross', overAnvil);
-      scaleRef.current = overAnvil ? 1 : target.closest('a, button, .card') ? 2.5 : 1;
+      const overClosingPiece = Boolean(target.closest('[data-cursor-cross]'));
+      orbRef.current?.classList.toggle('is-cross', overClosingPiece);
+      scaleRef.current = overClosingPiece ? 1 : target.closest('a, button, .card') ? 2.5 : 1;
       schedule();
     };
 

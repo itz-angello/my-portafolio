@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -14,10 +14,30 @@ const FeaturedProjectBlock: React.FC<{
 }> = ({ project, index, portfolioT }) => {
   const { lang } = useLanguage();
   const reduceMotion = useReducedMotion();
+  const articleRef = useRef<HTMLElement>(null);
   const category = project.category ? portfolioT.categories[project.category] : null;
+
+  useEffect(() => {
+    const article = articleRef.current;
+    const copy = article?.querySelector<HTMLElement>('.featured-project-copy');
+    const media = article?.querySelector<HTMLElement>('.featured-project-media');
+    if (!article || !copy || !media) return;
+
+    const updateAlignment = () => {
+      const verticalOffset = (media.getBoundingClientRect().height - copy.getBoundingClientRect().height) / 2;
+      article.classList.toggle('is-copy-centered', verticalOffset > 0 && verticalOffset < 24);
+    };
+
+    const observer = new ResizeObserver(updateAlignment);
+    observer.observe(copy);
+    observer.observe(media);
+    updateAlignment();
+    return () => observer.disconnect();
+  }, [lang, project.slug]);
 
   return (
     <motion.article
+      ref={articleRef}
       className={`featured-project${index % 2 === 1 ? ' is-reversed' : ''}`}
       initial={reduceMotion ? false : { opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -103,7 +123,12 @@ export const PortfolioPage: React.FC = () => {
       <section className="featured-projects-section" aria-labelledby="featured-projects-heading">
         <h2 id="featured-projects-heading" className="project-section-title">{portfolioT.featuredHeading}</h2>
         <div className="featured-projects-list">
-          {featuredProjects.map((project, index) => <FeaturedProjectBlock key={project.slug} project={project} index={index} portfolioT={portfolioT} />)}
+          {featuredProjects.map((project, index) => (
+            <React.Fragment key={project.slug}>
+              {index > 0 && <hr className="featured-project-divider" aria-hidden="true" />}
+              <FeaturedProjectBlock project={project} index={index} portfolioT={portfolioT} />
+            </React.Fragment>
+          ))}
         </div>
       </section>
 

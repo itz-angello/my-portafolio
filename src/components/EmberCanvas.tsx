@@ -29,7 +29,8 @@ export const EmberCanvas: React.FC = () => {
 
     let width = 0;
     let height = 0;
-    let frame = 0;
+    let frame: number | null = null;
+    let inViewport = false;
     let lastTime = 0;
     let pointer = { x: -1000, y: -1000 };
     const embers: Ember[] = [];
@@ -117,16 +118,27 @@ export const EmberCanvas: React.FC = () => {
         }
       }
       context.globalAlpha = 1;
-      frame = requestAnimationFrame(draw);
+      frame = inViewport ? requestAnimationFrame(draw) : null;
     };
 
     resize();
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      inViewport = entry.isIntersecting;
+      if (inViewport && frame === null) {
+        lastTime = 0;
+        frame = requestAnimationFrame(draw);
+      } else if (!inViewport && frame !== null) {
+        cancelAnimationFrame(frame);
+        frame = null;
+      }
+    });
+    visibilityObserver.observe(canvas);
     window.addEventListener('resize', resize, { passive: true });
     window.addEventListener('pointermove', onPointerMove, { passive: true });
-    frame = requestAnimationFrame(draw);
 
     return () => {
-      cancelAnimationFrame(frame);
+      if (frame !== null) cancelAnimationFrame(frame);
+      visibilityObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('pointermove', onPointerMove);
     };

@@ -47,9 +47,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
   };
 
   return (
-    <header className="fixed inset-x-0 top-3 z-50 flex justify-center pointer-events-none">
+    <header className="site-nav-header fixed top-3 z-50 flex justify-center pointer-events-none">
       <nav
-        className="site-container site-nav pointer-events-auto relative flex items-center gap-1 rounded-full px-2 py-2 sm:gap-1 sm:px-2"
+        className="site-container site-nav pointer-events-auto relative flex items-center gap-2 rounded-full px-2 py-2"
         style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-surface-2)',
@@ -59,7 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
         {/* Logo */}
         <a
           href="/"
-          className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full font-heading text-xs font-bold tracking-[0.08em] sm:mr-1 sm:h-9 sm:w-9 sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+          className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full font-heading text-xs font-bold tracking-[0.08em] sm:h-9 sm:w-9 sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
           style={{ background: 'var(--color-accent)', color: 'var(--color-ink)' }}
           aria-label="AC — Angel Chacón — Home"
         >
@@ -67,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
         </a>
 
         {/* Nav links */}
-        <div className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 sm:flex sm:justify-start sm:gap-1">
+        <div className="hidden items-center gap-1 sm:flex">
           {NAV_ITEMS.map((item) => {
             const active = isActive(item.href, currentPage);
             const label = t.nav[item.labelKey];
@@ -92,7 +92,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
         {/* Language toggle */}
         <button
           onClick={handleToggle}
-          className="ml-auto shrink-0 rounded-full px-2 py-1.5 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] sm:ml-1 sm:px-3 sm:text-sm"
+          className="shrink-0 rounded-full px-2 py-1.5 text-xs font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] sm:px-3 sm:text-sm"
           style={{
             border: '1px solid var(--color-muted)',
             color: 'var(--color-soft)',
