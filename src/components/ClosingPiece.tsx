@@ -4,7 +4,6 @@ interface ClosingPieceProps {
   label: string;
   owner: string;
   location: string;
-  imageSrc?: string;
 }
 
 interface CharacterCell {
@@ -13,13 +12,14 @@ interface CharacterCell {
   brightness: number;
   offsetX: number;
   offsetY: number;
+  hover: number;
 }
 
 const DENSITY_RAMP = ' .:-=+*#%@';
 const CELL_SIZE = 10;
 const INTERACTION_RADIUS = 90;
 
-export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, location, imageSrc }) => {
+export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, location }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sourceCanvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -33,7 +33,6 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const coarsePointer = window.matchMedia('(pointer: coarse)');
     const compactViewport = window.matchMedia('(max-width: 639px)');
-    const image = imageSrc ? new Image() : null;
     const cells: CharacterCell[] = [];
     const movingCells = new Set<CharacterCell>();
     let motionDisabled = reducedMotion.matches || coarsePointer.matches || compactViewport.matches;
@@ -48,49 +47,32 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
 
     const accent = getComputedStyle(canvas).getPropertyValue('--color-accent').trim() || '#f18b45';
     const textColor = getComputedStyle(canvas).getPropertyValue('--color-soft').trim() || '#aab9bd';
-    const headingFont = getComputedStyle(canvas).getPropertyValue('--font-heading').trim() || 'sans-serif';
     const monoFont = getComputedStyle(canvas).getPropertyValue('--font-mono').trim() || 'monospace';
-    const background = '#101d25';
+    const toRgb = (color: string) => {
+      const hex = color.match(/^#([\da-f]{3}|[\da-f]{6})$/i)?.[1];
+      if (!hex) return [158, 198, 223];
+      const value = hex.length === 3 ? [...hex].map((digit) => digit + digit).join('') : hex;
+      return [0, 2, 4].map((index) => Number.parseInt(value.slice(index, index + 2), 16));
+    };
+    const baseRgb = toRgb(textColor);
+    const accentRgb = toRgb(accent).map((channel) => Math.min(230, Math.round(channel * 1.35)));
 
     const drawGeneratedMonogram = () => {
-      sourceContext.fillStyle = background;
-      sourceContext.fillRect(0, 0, width, height);
-
-      const ambient = sourceContext.createRadialGradient(width * 0.5, height * 0.52, 0, width * 0.5, height * 0.52, width * 0.48);
-      ambient.addColorStop(0, 'rgba(91, 129, 143, 0.22)');
-      ambient.addColorStop(0.55, 'rgba(55, 83, 94, 0.12)');
-      ambient.addColorStop(1, 'rgba(16, 29, 37, 0)');
-      sourceContext.fillStyle = ambient;
-      sourceContext.fillRect(0, 0, width, height);
-
-      const fontSize = Math.min(height * 1.08, width * 0.72);
-      sourceContext.font = `900 ${fontSize}px ${headingFont}`;
-      sourceContext.textAlign = 'center';
-      sourceContext.textBaseline = 'middle';
-      sourceContext.shadowColor = accent;
-      sourceContext.shadowBlur = height * 0.1;
-      const volume = sourceContext.createLinearGradient(width * 0.28, height * 0.12, width * 0.73, height * 0.9);
-      volume.addColorStop(0, '#ffe0b0');
-      volume.addColorStop(0.3, '#ffab67');
-      volume.addColorStop(0.68, '#c96239');
-      volume.addColorStop(1, '#385461');
-      sourceContext.fillStyle = volume;
-      sourceContext.fillText('AC', width / 2, height * 0.51);
-      sourceContext.shadowBlur = 0;
-    };
-
-    const drawImageSource = () => {
-      if (!image?.complete || !image.naturalWidth || !image.naturalHeight) {
-        drawGeneratedMonogram();
-        return;
-      }
-
-      sourceContext.fillStyle = background;
-      sourceContext.fillRect(0, 0, width, height);
-      const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
-      const drawWidth = image.naturalWidth * scale;
-      const drawHeight = image.naturalHeight * scale;
-      sourceContext.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
+      sourceContext.clearRect(0, 0, width, height);
+      sourceContext.strokeStyle = '#d0d0d0';
+      sourceContext.lineWidth = Math.min(height * 0.105, width * 0.035);
+      sourceContext.lineCap = 'butt';
+      sourceContext.lineJoin = 'miter';
+      sourceContext.beginPath();
+      sourceContext.moveTo(width * 0.14, height * 0.82);
+      sourceContext.lineTo(width * 0.29, height * 0.18);
+      sourceContext.lineTo(width * 0.44, height * 0.82);
+      sourceContext.moveTo(width * 0.21, height * 0.57);
+      sourceContext.lineTo(width * 0.37, height * 0.57);
+      sourceContext.stroke();
+      sourceContext.beginPath();
+      sourceContext.ellipse(width * 0.70, height * 0.50, width * 0.155, height * 0.315, 0, -Math.PI / 4, -7 * Math.PI / 4, true);
+      sourceContext.stroke();
     };
 
     const rebuildCells = () => {
@@ -103,7 +85,7 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
       canvas.height = Math.round(height * pixelRatio);
       sourceCanvas.width = Math.round(width);
       sourceCanvas.height = Math.round(height);
-      drawImageSource();
+      drawGeneratedMonogram();
 
       const pixels = sourceContext.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height).data;
       columns = Math.ceil(width / CELL_SIZE);
@@ -135,19 +117,21 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
           }
 
           const brightness = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / (samples * 255);
-          cells.push({ x, y, brightness, offsetX: 0, offsetY: 0 });
+          cells.push({ x, y, brightness, offsetX: 0, offsetY: 0, hover: 0 });
         }
       }
       renderBase();
       draw();
     };
 
-    const drawCharacter = (_cell: CharacterCell, brightness: number, x: number, y: number, influence = 0) => {
+    const drawCharacter = (cell: CharacterCell, brightness: number, x: number, y: number) => {
       const rampIndex = Math.min(DENSITY_RAMP.length - 1, Math.floor(brightness * (DENSITY_RAMP.length - 1)));
       const character = DENSITY_RAMP[rampIndex];
       if (character === ' ' || brightness < 0.055) return;
-      context.globalAlpha = Math.min(1, 0.18 + brightness * 0.82);
-      context.fillStyle = influence > 0.12 || (brightness > 0.72 && rampIndex > 7) ? accent : textColor;
+      context.globalAlpha = Math.min(1, 0.45 + brightness * 0.55);
+      const amount = cell.hover * 0.78;
+      const rgb = baseRgb.map((channel, index) => Math.round(channel + (accentRgb[index] - channel) * amount));
+      context.fillStyle = `rgb(${rgb.join(' ')})`;
       context.fillText(character, x, y);
     };
 
@@ -173,7 +157,10 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
         const minRow = Math.max(0, Math.floor((pointer.y - INTERACTION_RADIUS) / CELL_SIZE));
         const maxRow = Math.min(rows - 1, Math.ceil((pointer.y + INTERACTION_RADIUS) / CELL_SIZE));
         for (let row = minRow; row <= maxRow; row += 1) {
-          for (let column = minColumn; column <= maxColumn; column += 1) candidates.add(cells[row * columns + column]);
+          for (let column = minColumn; column <= maxColumn; column += 1) {
+            const cell = cells[row * columns + column];
+            if (cell?.brightness >= 0.055) candidates.add(cell);
+          }
         }
       }
 
@@ -210,13 +197,16 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
         const dy = cell.y - pointer.y;
         const distance = Math.hypot(dx, dy);
         const influence = pointer.active ? Math.max(0, 1 - distance / INTERACTION_RADIUS) : 0;
+        cell.hover += (influence - cell.hover) * 0.18;
+        const hoverMoving = Math.abs(influence - cell.hover) > 0.01;
+        if (hoverMoving) unsettled = true;
         const force = influence * influence * 9;
         const targetX = influence > 0 && distance > 0.1 ? (dx / distance) * force : 0;
         const targetY = influence > 0 && distance > 0.1 ? (dy / distance) * force : 0;
         cell.offsetX += (targetX - cell.offsetX) * 0.22;
         cell.offsetY += (targetY - cell.offsetY) * 0.22;
         const stillMoving = Math.abs(targetX - cell.offsetX) > 0.1 || Math.abs(targetY - cell.offsetY) > 0.1;
-        if (stillMoving) {
+        if (stillMoving || hoverMoving) {
           unsettled = true;
           movingCells.add(cell);
         } else {
@@ -225,9 +215,9 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
           movingCells.delete(cell);
         }
 
-        if (influence > 0.08 || hasOffset) {
+        if (influence > 0.01 || cell.hover > 0.01 || hasOffset) {
           context.clearRect(cell.x - CELL_SIZE * 0.7, cell.y - CELL_SIZE * 0.7, CELL_SIZE * 1.4, CELL_SIZE * 1.4);
-          drawCharacter(cell, Math.min(1, cell.brightness + influence * 0.38), cell.x + cell.offsetX, cell.y + cell.offsetY, influence);
+          drawCharacter(cell, cell.brightness, cell.x + cell.offsetX, cell.y + cell.offsetY);
         }
       }
       context.globalAlpha = 1;
@@ -256,17 +246,11 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
       if (motionDisabled && frameId !== null) {
         cancelAnimationFrame(frameId);
         frameId = null;
-        cells.forEach((cell) => { cell.offsetX = 0; cell.offsetY = 0; });
+        cells.forEach((cell) => { cell.offsetX = 0; cell.offsetY = 0; cell.hover = 0; });
         movingCells.clear();
         if (baseFrame) context.putImageData(baseFrame, 0, 0);
       }
     };
-
-    if (image) {
-      image.onload = rebuildCells;
-      image.onerror = rebuildCells;
-      image.src = imageSrc ?? '';
-    }
 
     const resizeObserver = new ResizeObserver(rebuildCells);
     resizeObserver.observe(canvas);
@@ -285,12 +269,8 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
       coarsePointer.removeEventListener('change', updateMotionPreference);
       compactViewport.removeEventListener('change', updateMotionPreference);
       if (frameId !== null) cancelAnimationFrame(frameId);
-      if (image) {
-        image.onload = null;
-        image.onerror = null;
-      }
     };
-  }, [imageSrc]);
+  }, []);
 
   return (
     <section className="closing-piece-zone site-container" aria-label={label}>

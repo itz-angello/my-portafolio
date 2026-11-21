@@ -89,6 +89,11 @@ export interface SiteContent {
       marqueePills: string[];
       about: {
         heading: string;
+        intro: {
+          initialWord: string;
+          phrase: string;
+          words: { text: string; x: number; y: number; size: number; angle: number; depth: number; tone: 'ember' | 'slate' }[];
+        };
         lead: string;
         bio: string; // 1–2 sentence bio for About page
         scrubText: string;
@@ -289,6 +294,31 @@ export const content: SiteContent = {
       ],
       about: {
         heading: "About",
+        intro: {
+          initialWord: "Constancy",
+          phrase: "Handmade, built with constancy",
+          words: [
+            { text: "Constancy", x: 20, y: 24, size: 1.25, angle: -8, depth: 1, tone: "ember" },
+            { text: "Curiosity", x: 78, y: 20, size: 1.05, angle: 8, depth: .75, tone: "slate" },
+            { text: "Responsibility", x: 24, y: 43, size: .8, angle: -5, depth: .45, tone: "slate" },
+            { text: "Detail", x: 79, y: 42, size: 1.3, angle: 11, depth: .9, tone: "ember" },
+            { text: "Delivery", x: 16, y: 65, size: .92, angle: 7, depth: .65, tone: "ember" },
+            { text: "Learning", x: 82, y: 64, size: 1.05, angle: -9, depth: .8, tone: "slate" },
+            { text: "React", x: 40, y: 17, size: 1.2, angle: 6, depth: .85, tone: "ember" },
+            { text: "TypeScript", x: 61, y: 18, size: .86, angle: -7, depth: .55, tone: "slate" },
+            { text: "Vite", x: 50, y: 81, size: 1.3, angle: -6, depth: 1, tone: "ember" },
+            { text: "Tailwind CSS", x: 18, y: 83, size: .85, angle: 5, depth: .55, tone: "slate" },
+            { text: "Framer Motion", x: 82, y: 82, size: .78, angle: -4, depth: .4, tone: "slate" },
+            { text: "Canvas API", x: 91, y: 31, size: .78, angle: 9, depth: .5, tone: "ember" },
+            { text: "Web Audio", x: 9, y: 32, size: .9, angle: -10, depth: .7, tone: "ember" },
+            { text: "Git", x: 34, y: 72, size: 1.35, angle: -13, depth: 1, tone: "ember" },
+            { text: "HTML", x: 66, y: 72, size: 1.1, angle: 12, depth: .8, tone: "slate" },
+            { text: "CSS", x: 38, y: 34, size: .95, angle: 10, depth: .6, tone: "slate" },
+            { text: "JavaScript", x: 63, y: 36, size: 1.18, angle: -8, depth: .9, tone: "ember" },
+            { text: "Guatemala", x: 9, y: 51, size: .96, angle: 5, depth: .7, tone: "slate" },
+            { text: "WebForge", x: 90, y: 53, size: 1.2, angle: -8, depth: .95, tone: "ember" },
+          ],
+        },
         lead: "I make websites that load fast, look good on a phone, and turn curious visitors into paying customers.",
         bio: "I'm a freelance web developer based in Guatemala, building and restoring fast, responsive websites for small businesses and clients around the world.",
         scrubText: "Based in Guatemala, I craft bespoke web experiences with meticulous attention to detail. Whether starting from scratch for a local enterprise or breathing new life into an outdated site, I combine speed, responsive aesthetics, and robust code to build platforms that elevate your brand.",
@@ -474,6 +504,31 @@ export const content: SiteContent = {
       ],
       about: {
         heading: "Sobre mí",
+        intro: {
+          initialWord: "Constancia",
+          phrase: "Hecho a mano, construido con constancia",
+          words: [
+            { text: "Constancia", x: 20, y: 24, size: 1.25, angle: -8, depth: 1, tone: "ember" },
+            { text: "Curiosidad", x: 78, y: 20, size: 1.05, angle: 8, depth: .75, tone: "slate" },
+            { text: "Responsabilidad", x: 24, y: 43, size: .8, angle: -5, depth: .45, tone: "slate" },
+            { text: "Detalle", x: 79, y: 42, size: 1.3, angle: 11, depth: .9, tone: "ember" },
+            { text: "Entrega", x: 16, y: 65, size: .92, angle: 7, depth: .65, tone: "ember" },
+            { text: "Aprendizaje", x: 82, y: 64, size: 1.05, angle: -9, depth: .8, tone: "slate" },
+            { text: "React", x: 40, y: 17, size: 1.2, angle: 6, depth: .85, tone: "ember" },
+            { text: "TypeScript", x: 61, y: 18, size: .86, angle: -7, depth: .55, tone: "slate" },
+            { text: "Vite", x: 50, y: 81, size: 1.3, angle: -6, depth: 1, tone: "ember" },
+            { text: "Tailwind CSS", x: 18, y: 83, size: .85, angle: 5, depth: .55, tone: "slate" },
+            { text: "Framer Motion", x: 82, y: 82, size: .78, angle: -4, depth: .4, tone: "slate" },
+            { text: "Canvas API", x: 91, y: 31, size: .78, angle: 9, depth: .5, tone: "ember" },
+            { text: "Web Audio", x: 9, y: 32, size: .9, angle: -10, depth: .7, tone: "ember" },
+            { text: "Git", x: 34, y: 72, size: 1.35, angle: -13, depth: 1, tone: "ember" },
+            { text: "HTML", x: 66, y: 72, size: 1.1, angle: 12, depth: .8, tone: "slate" },
+            { text: "CSS", x: 38, y: 34, size: .95, angle: 10, depth: .6, tone: "slate" },
+            { text: "JavaScript", x: 63, y: 36, size: 1.18, angle: -8, depth: .9, tone: "ember" },
+            { text: "Guatemala", x: 9, y: 51, size: .96, angle: 5, depth: .7, tone: "slate" },
+            { text: "WebForge", x: 90, y: 53, size: 1.2, angle: -8, depth: .95, tone: "ember" },
+          ],
+        },
         lead: "Hago páginas web que cargan rápido, se ven excelentes en cualquier celular y convierten visitantes en clientes.",
         bio: "Soy desarrollador web freelance en Guatemala, creando y restaurando sitios rápidos y adaptables para negocios locales y clientes de todo el mundo.",
         scrubText: "Desde Guatemala, desarrollo experiencias digitales hechas a la medida con cuidado en cada píxel. Ya sea comenzando un sitio desde cero para un negocio local o renovando una página desactualizada, combino velocidad, estética responsive y código confiable para impulsar tu marca.",
