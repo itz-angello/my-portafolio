@@ -25,8 +25,11 @@ export const CursorOrb: React.FC = () => {
     };
 
     const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as Element;
-      scaleRef.current = target.closest('a, button, .card') ? 2.5 : 1;
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      const overAnvil = Boolean(target.closest('[data-cursor-cross]'));
+      orbRef.current?.classList.toggle('is-cross', overAnvil);
+      scaleRef.current = overAnvil ? 1 : target.closest('a, button, .card') ? 2.5 : 1;
       schedule();
     };
 
@@ -63,7 +66,7 @@ export const CursorOrb: React.FC = () => {
   return (
     <div
       ref={orbRef}
-      className="fixed top-0 left-0 w-[18px] h-[18px] rounded-full pointer-events-none z-[9998]"
+      className="custom-cursor fixed top-0 left-0 w-[18px] h-[18px] rounded-full pointer-events-none z-[9998]"
       style={{
         background: 'var(--color-accent)',
         transform: 'translate(-100px, -100px)',

@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { content } from '../content';
 import { ArrowDownRight, ArrowUpRight, Code2, Sparkles } from 'lucide-react';
 import { EmberCanvas } from '../components/EmberCanvas';
+import { AnvilAscii } from '../components/AnvilAscii';
 
 export const HomePage: React.FC = () => {
   const { lang } = useLanguage();
@@ -12,10 +13,11 @@ export const HomePage: React.FC = () => {
   const nameLetters = Array.from(content.name);
 
   return (
-    <section className="forge-hero relative flex min-h-[calc(100svh-5rem)] items-center overflow-hidden px-5 py-14 sm:px-8 lg:px-12" aria-labelledby="home-title">
-      <EmberCanvas />
-      <div className="forge-vignette" aria-hidden="true" />
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.08fr_.92fr] lg:gap-10">
+    <>
+      <section className="forge-hero relative flex min-h-[calc(100svh-5rem)] items-center overflow-hidden px-0 pb-14 pt-24 sm:py-14" aria-labelledby="home-title">
+        <EmberCanvas />
+        <div className="forge-vignette" aria-hidden="true" />
+        <div className="site-container relative z-10 grid items-center gap-12 lg:grid-cols-[1.08fr_.92fr] lg:gap-10">
         <div className="relative">
           <motion.p initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.12 }} className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-bg)]/85 px-4 py-2 text-xs font-semibold tracking-wide text-[var(--color-soft)] shadow-lg shadow-black/20 sm:text-sm">
             <span className="forge-status-dot" aria-hidden="true" />{hero.badge}
@@ -55,7 +57,20 @@ export const HomePage: React.FC = () => {
           <span className="forge-art-caption">{hero.visualLabel}</span>
           <span className="forge-art-foot">{hero.visualCaption}</span>
         </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      <AnvilAscii label={home.anvilLabel} />
+
+      <section className="site-container home-summary" aria-labelledby="home-summary-title">
+        <div className="home-summary-copy">
+          <h2 id="home-summary-title">
+            <span>{home.summary.heading}</span>
+            <span className="home-summary-accent">{home.summary.accent}</span>
+          </h2>
+          <p>{home.summary.description}</p>
+        </div>
+      </section>
+    </>
   );
 };

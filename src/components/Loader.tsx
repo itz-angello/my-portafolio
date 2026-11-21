@@ -18,7 +18,6 @@ export const Loader: React.FC = () => {
     if (prefersReducedMotion) return;
     try {
       if (sessionStorage.getItem('loader-shown')) return;
-      sessionStorage.setItem('loader-shown', '1');
     } catch {
       // The entrance still works when storage is unavailable.
     }
@@ -33,7 +32,14 @@ export const Loader: React.FC = () => {
       const next = Math.min((now - start) / duration, 1);
       setProgress(Math.round(next * 100));
       if (next < 1) frame = requestAnimationFrame(tick);
-      else exitTimer = window.setTimeout(() => setVisible(false), 160);
+      else {
+        try {
+          sessionStorage.setItem('loader-shown', '1');
+        } catch {
+          // The loader can still finish when storage is unavailable.
+        }
+        exitTimer = window.setTimeout(() => setVisible(false), 160);
+      }
     };
 
     frame = requestAnimationFrame(tick);

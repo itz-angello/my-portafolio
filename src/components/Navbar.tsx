@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
         style={{
           background: 'var(--color-surface)',
           border: '1px solid var(--color-surface-2)',
-          maxWidth: '1040px',
+          maxWidth: '72rem',
           width: '100%',
         }}
         aria-label={t.nav.label}

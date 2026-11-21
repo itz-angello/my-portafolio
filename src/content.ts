@@ -73,6 +73,8 @@ export interface SiteContent {
         viewProjects: string;
         contactMe: string;
         roles: string[];
+        anvilLabel: string;
+        summary: { heading: string; accent: string; description: string };
       };
       hero: {
         badge: string;
@@ -176,6 +178,9 @@ export interface SiteContent {
         };
       };
       footer: {
+        journeyTitle: string;
+        contactTitle: string;
+        whatsappContact: string;
         location: string;
         rights: string;
         backToTop: string;
@@ -250,6 +255,12 @@ export const content: SiteContent = {
         viewProjects: "View projects",
         contactMe: "Contact me",
         roles: ["Web Developer", "Website restoration", "Freelance projects"],
+        anvilLabel: "Original ASCII illustration of an anvil and hammer. Move the mouse over it to move the characters.",
+        summary: {
+          heading: "In summary, I'm...",
+          accent: "a web developer.",
+          description: "In Guatemala, I build fast websites for small businesses. Available for freelance projects in Guatemala City.",
+        },
       },
       hero: {
         badge: "Available for freelance & contract",
@@ -367,6 +378,9 @@ export const content: SiteContent = {
         },
       },
       footer: {
+        journeyTitle: "Journey",
+        contactTitle: "Contact",
+        whatsappContact: "WhatsApp +502 55688746",
         location: "Built in Guatemala",
         rights: "All rights reserved.",
         backToTop: "Back to top",
@@ -421,6 +435,12 @@ export const content: SiteContent = {
         viewProjects: "Ver proyectos",
         contactMe: "Contáctame",
         roles: ["Desarrollador web", "Restauración de sitios", "Proyectos freelance"],
+        anvilLabel: "Ilustración ASCII original de un yunque y un martillo. Mueve el cursor encima para desplazar los caracteres.",
+        summary: {
+          heading: "En resumen soy...",
+          accent: "desarrollador web.",
+          description: "En Guatemala, creo páginas rápidas para pequeños negocios. Disponible para proyectos freelance en Ciudad de Guatemala.",
+        },
       },
       hero: {
         badge: "Disponible para proyectos freelance",
@@ -538,6 +558,9 @@ export const content: SiteContent = {
         },
       },
       footer: {
+        journeyTitle: "Recorrido",
+        contactTitle: "Contacto",
+        whatsappContact: "WhatsApp +502 55688746",
         location: "Hecho en Guatemala",
         rights: "Todos los derechos reservados.",
         backToTop: "Volver arriba",

@@ -40,7 +40,7 @@ export const AboutPage: React.FC = () => {
 
   return (
     <>
-      <article className="about-profile mx-auto max-w-6xl px-5 pb-16 pt-28 sm:px-8 lg:px-10">
+      <article className="about-profile site-container pb-16 pt-24">
         <motion.header initial={enter} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.55 }} className="about-profile-heading">
           <span className="about-profile-eyebrow"><Sparkles size={15} aria-hidden="true" />{aboutT.heading}</span>
           <h1>{content.name}</h1>

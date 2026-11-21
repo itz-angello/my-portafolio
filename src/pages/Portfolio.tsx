@@ -52,7 +52,6 @@ const FeaturedProjectBlock: React.FC<{
           <img src={project.image} alt={project.imageAlt?.[lang] ?? `${project.name[lang]} — ${portfolioT.previewLabel}`} loading="lazy" width={1200} height={760} />
         ) : (
           <div className="featured-project-placeholder">
-            <span className="featured-project-placeholder-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
             <strong>{project.name[lang]}</strong>
             <span>{portfolioT.captureComing}</span>
           </div>
@@ -99,7 +98,7 @@ export const PortfolioPage: React.FC = () => {
   const filters: ArchiveFilter[] = ['all', 'personal', 'client', 'learning'];
 
   return (
-    <div className="mx-auto max-w-6xl px-5 pb-24 pt-28 sm:px-8 lg:px-10">
+    <div className="site-container pb-24 pt-24">
       <h1 className="project-section-title">{portfolioT.heading}</h1>
       <section className="featured-projects-section" aria-labelledby="featured-projects-heading">
         <h2 id="featured-projects-heading" className="project-section-title">{portfolioT.featuredHeading}</h2>
