@@ -6,10 +6,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <title>Angel Chacón — Web Developer in Guatemala</title>
-  <meta name="description" content="Angel Chacón is a web developer in Guatemala who builds and restores websites for small businesses.">
-  <meta property="og:title" content="Angel Chacón — Web Developer">
-  <meta property="og:description" content="Web developer in Guatemala. Building fast, responsive websites.">
+  <title>Angel Chacón — Full Stack Developer in Guatemala</title>
+  <meta name="description" content="Angel Chacón is a full stack developer in Guatemala. I build fast, responsive applications and websites, from frontend to backend.">
+  <meta property="og:title" content="Angel Chacón — Full Stack Developer">
+  <meta property="og:description" content="Full stack developer in Guatemala. Building fast, responsive applications and websites.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="/">
   <meta property="og:image" content="/og-image.png">
@@ -22,16 +22,18 @@
   <script>
     window.__updateMeta = function(lang) {
       var titles = {
-        en: "Angel Chacón — Web Developer in Guatemala",
-        es: "Angel Chacón — Desarrollador web en Guatemala"
+        en: "Angel Chacón — Full Stack Developer in Guatemala",
+        es: "Angel Chacón — Desarrollador full stack en Guatemala"
       };
       var descs = {
-        en: "Angel Chacón is a web developer in Guatemala who builds and restores websites for small businesses.",
-        es: "Angel Chacón es desarrollador web en Guatemala. Crea y restaura sitios para negocios y clientes freelance."
+        en: "Angel Chacón is a full stack developer in Guatemala. I build fast, responsive applications and websites, from frontend to backend.",
+        es: "Angel Chacón es desarrollador full stack en Guatemala. Creo y restauro aplicaciones y sitios web rápidos, del frontend al backend."
       };
       document.title = titles[lang] || titles.en;
       var metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) metaDesc.setAttribute('content', descs[lang] || descs.en);
+      var ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute('content', descs[lang] || descs.en);
     };
   </script>
 </head>

@@ -6,13 +6,13 @@
     en: {
       skip: "Skip to content", menu: "Menu",
       nav_about: "About", nav_projects: "Projects", nav_skills: "Skills", nav_services: "Services", nav_contact: "Contact",
-      hero_tag: "I'm a web developer from Guatemala. I build websites for small businesses and freelance clients.",
+      hero_tag: "I'm a full stack developer in Guatemala. I build fast, responsive, well-crafted applications and websites, from frontend to backend.",
       hero_cta: "Contact me",
       marquee: "Websites|Landing pages|Redesigns|Fast loading|Mobile first|Updates and fixes",
       about_title: "About",
       about_lead: "I make websites that load fast, look good on a phone and are easy for customers to use.",
-      about_1: "I'm a web developer based in Guatemala. I build and restore websites for small businesses and take freelance projects from clients abroad.",
-      about_2: "I am open to freelance projects and long-term clients.",
+      about_1: "I'm a full stack developer in Guatemala. I build and restore fast, responsive websites and applications, from frontend to backend.",
+      about_2: "I'm open to new opportunities.",
       cv: "Download CV",
       projects_title: "Projects", live: "Live project",
       skills_title: "Skills", all: "All", languages: "Languages", tools: "Tools", craft: "Craft",
@@ -32,13 +32,13 @@
     es: {
       skip: "Saltar al contenido", menu: "Menú",
       nav_about: "Sobre mí", nav_projects: "Proyectos", nav_skills: "Habilidades", nav_services: "Servicios", nav_contact: "Contacto",
-      hero_tag: "Soy desarrollador web en Guatemala. Creo páginas web para pequeños negocios y clientes freelance.",
+      hero_tag: "Soy desarrollador full stack en Guatemala. Creo aplicaciones y sitios web rápidos, adaptables y bien construidos, del frontend al backend.",
       hero_cta: "Contáctame",
       marquee: "Páginas web|Landing pages|Rediseños|Carga rápida|Pensado para el celular|Mejoras y arreglos",
       about_title: "Sobre mí",
       about_lead: "Hago páginas web que cargan rápido, se ven bien en el celular y son fáciles de usar para los clientes.",
-      about_1: "Soy desarrollador web en Guatemala. Creo y restauro páginas web para pequeños negocios y tomo proyectos freelance de clientes en el extranjero.",
-      about_2: "Estoy abierto a proyectos freelance y a clientes a largo plazo.",
+      about_1: "Soy desarrollador full stack en Guatemala. Creo y restauro sitios web y aplicaciones rápidos, adaptables y bien construidos, del frontend al backend.",
+      about_2: "Estoy disponible para nuevas oportunidades.",
       cv: "Descargar CV",
       projects_title: "Proyectos", live: "Ver proyecto",
       skills_title: "Habilidades", all: "Todas", languages: "Lenguajes", tools: "Herramientas", craft: "Oficio",
@@ -174,7 +174,7 @@
     document.querySelectorAll("[data-i18n]").forEach(function (n) { n.textContent = t(n.getAttribute("data-i18n")); });
     document.querySelectorAll("[data-i18n-aria]").forEach(function (n) { n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria"))); });
     document.querySelectorAll(".lang button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
-    document.title = name + (lang === "es" ? " | Desarrollador web en Guatemala" : " | Web developer in Guatemala");
+    document.title = name + (lang === "es" ? " | Desarrollador full stack en Guatemala" : " | Full stack developer in Guatemala");
     renderMarquee(); renderProjects(); renderSkills(); renderLinks();
   }
   document.querySelectorAll(".lang button").forEach(function (b) {

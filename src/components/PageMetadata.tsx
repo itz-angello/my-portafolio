@@ -25,8 +25,8 @@ export const PageMetadata: React.FC<PageMetadataProps> = ({ page, project }) => 
   const staticMetadata = content.texts[lang].metadata;
   const metadata = page === 'project' && project
     ? {
-        title: `${project.name[lang]} — Angel Chacón, ${lang === 'es' ? 'Desarrollador web en Guatemala' : 'Web Developer in Guatemala'}`,
-        description: `${project.shortDescription[lang]} ${lang === 'es' ? 'Angel Chacón, desarrollador web en Guatemala.' : 'Angel Chacón, web developer in Guatemala.'}`,
+        title: `${project.name[lang]} — Angel Chacón, ${lang === 'es' ? 'Desarrollador full stack en Guatemala' : 'Full Stack Developer in Guatemala'}`,
+        description: `${project.shortDescription[lang]} ${lang === 'es' ? 'Angel Chacón, desarrollador full stack en Guatemala.' : 'Angel Chacón, full stack developer in Guatemala.'}`,
       }
     : staticMetadata[page === 'project' ? 'notFound' : page];
 

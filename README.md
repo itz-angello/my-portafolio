@@ -1,6 +1,6 @@
 # Portafolio de Angel Chacón
 
-Portafolio bilingüe de **Angel Chacón, desarrollador web en Guatemala**. Presenta proyectos, servicios y formas de contacto en español e inglés.
+Portafolio bilingüe de **Angel Chacón, desarrollador full stack en Guatemala**. Presenta proyectos, servicios y formas de contacto en español e inglés.
 
 ## Tecnologías
 
@@ -53,7 +53,7 @@ React 19, TypeScript, Vite, Tailwind CSS 4, Framer Motion y Lucide React.
 - `public/`: archivos estáticos públicos, como el favicon.
 - `dist/`: salida generada por el build; no se edita a mano.
 
-Las rutas públicas incluyen `/`, `/about/`, `/portfolio/`, `/skills/`, `/certificates/` y `/contact/`. Vite también genera una ruta independiente para cada ficha `/portfolio/<slug>/`.
+Las rutas públicas incluyen `/`, `/about/`, `/portfolio/`, `/skills/`, `/certificates/` y `/contact/`. Vite también genera una ruta propia para cada ficha `/portfolio/<slug>/`.
 
 ## Cambiar textos ES/EN
 
