@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import asciiArt from '../assets/ascii-art.txt?raw';
+import asciiDigits from '../assets/ascii-digits.txt?raw';
 
 interface ClosingPieceProps {
   label: string;
@@ -6,280 +8,266 @@ interface ClosingPieceProps {
   location: string;
 }
 
-interface CharacterCell {
+interface ArtGlyph {
+  character: string;
+  row: number;
   x: number;
   y: number;
-  brightness: number;
+  alpha: number;
+  color: number[];
+  dense: boolean;
+  entrance: number;
+  hover: number;
   offsetX: number;
   offsetY: number;
-  hover: number;
-  backgroundGlyph: string;
-  opening: boolean;
 }
 
-const DENSITY_RAMP = ' .:-=+*#%@';
-const BACKGROUND_GLYPHS = '01{}[]<>/\\:;+=_';
-const CELL_SIZE = 10;
-const INTERACTION_RADIUS = 90;
+const HOVER_RADIUS = 80;
+const ENTRANCE_STAGGER = 560;
+const ENTRANCE_FADE = 340;
+const DENSITY: Record<string, { alpha: number; level: number }> = {
+  '@': { alpha: 1, level: 1 },
+  '%': { alpha: 0.94, level: 1 },
+  '#': { alpha: 0.9, level: 1 },
+  '=': { alpha: 0.68, level: 0.55 },
+  '*': { alpha: 0.72, level: 0.55 },
+  '+': { alpha: 0.64, level: 0.55 },
+  ':': { alpha: 0.46, level: 0 },
+  '-': { alpha: 0.4, level: 0 },
+  '.': { alpha: 0.34, level: 0 },
+};
+
+const ART_LINES = asciiArt.replace(/\r/g, '').replace(/\n+$/, '').split('\n');
+const DIGIT_LINES = asciiDigits.replace(/\r/g, '').replace(/\n+$/, '').split('\n');
+const ART_COLUMNS = Math.max(...ART_LINES.map((line) => line.length));
+const DIGIT_COLUMNS = Math.max(...DIGIT_LINES.map((line) => line.length));
 
 export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, location }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sourceCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const sourceCanvas = sourceCanvasRef.current;
     const context = canvas?.getContext('2d', { alpha: true });
-    const sourceContext = sourceCanvas?.getContext('2d', { willReadFrequently: true });
-    if (!canvas || !sourceCanvas || !context || !sourceContext) return;
+    if (!canvas || !context) return;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const coarsePointer = window.matchMedia('(pointer: coarse)');
     const compactViewport = window.matchMedia('(max-width: 639px)');
-    const cells: CharacterCell[] = [];
-    const movingCells = new Set<CharacterCell>();
     let motionDisabled = reducedMotion.matches || coarsePointer.matches || compactViewport.matches;
-    let frameId: number | null = null;
     let width = 0;
     let height = 0;
-    let columns = 0;
-    let rows = 0;
+    let fontSize = 0;
+    let cellWidth = 0;
     let pixelRatio = 1;
-    let baseFrame: ImageData | null = null;
-    let pointer = { x: -1000, y: -1000, active: false };
+    let glyphs: ArtGlyph[] = [];
+    let frameId: number | null = null;
+    let flickerTimer: number | null = null;
+    let hasEntered = false;
+    let isVisible = false;
+    let entranceStart = 0;
+    const pointer = { x: -1000, y: -1000, active: false };
 
-    const accent = getComputedStyle(canvas).getPropertyValue('--color-forge').trim() || '#e98245';
-    const textColor = getComputedStyle(canvas).getPropertyValue('--color-soft').trim() || '#aab9bd';
-    const monoFont = getComputedStyle(canvas).getPropertyValue('--font-mono').trim() || 'monospace';
-    const toRgb = (color: string) => {
-      const hex = color.match(/^#([\da-f]{3}|[\da-f]{6})$/i)?.[1];
-      if (!hex) return [158, 198, 223];
+    const readRgb = (property: string, fallback: string) => {
+      const color = getComputedStyle(canvas).getPropertyValue(property).trim() || fallback;
+      const hex = color.match(/^#([\da-f]{3}|[\da-f]{6})$/i)?.[1] ?? fallback.slice(1);
       const value = hex.length === 3 ? [...hex].map((digit) => digit + digit).join('') : hex;
       return [0, 2, 4].map((index) => Number.parseInt(value.slice(index, index + 2), 16));
     };
-    const baseRgb = toRgb(textColor);
-    const accentRgb = toRgb(accent).map((channel) => Math.min(230, Math.round(channel * 1.35)));
+    const slateRgb = readRgb('--color-textile', '#719a9a');
+    const blueRgb = readRgb('--color-accent', '#9ec6df');
+    const emberRgb = readRgb('--color-ember-hot', '#f5ba7b').map((channel) => Math.min(255, Math.round(channel * 1.25)));
+    const blend = (from: number[], to: number[], amount: number) => from.map((channel, index) => Math.round(channel + (to[index] - channel) * amount));
+    const monoFont = getComputedStyle(canvas).getPropertyValue('--font-mono').trim() || 'monospace';
 
-    const drawGeneratedMonogram = () => {
-      sourceContext.clearRect(0, 0, width, height);
-      sourceContext.strokeStyle = '#d0d0d0';
-      sourceContext.lineWidth = Math.min(height * 0.105, width * 0.035);
-      sourceContext.lineCap = 'butt';
-      sourceContext.lineJoin = 'miter';
-      sourceContext.beginPath();
-      sourceContext.moveTo(width * 0.14, height * 0.82);
-      sourceContext.lineTo(width * 0.29, height * 0.18);
-      sourceContext.lineTo(width * 0.44, height * 0.82);
-      sourceContext.moveTo(width * 0.21, height * 0.57);
-      sourceContext.lineTo(width * 0.37, height * 0.57);
-      sourceContext.stroke();
-      sourceContext.beginPath();
-      const radiusX = width * 0.155;
-      const radiusY = height * 0.315;
-      const openingHalfAngle = Math.atan2(radiusX * Math.sin(Math.PI / 6), radiusY * Math.cos(Math.PI / 6));
-      sourceContext.ellipse(width * 0.70, height * 0.50, radiusX, radiusY, 0, -openingHalfAngle, -2 * Math.PI + openingHalfAngle, true);
-      sourceContext.stroke();
+    const drawGlyph = (glyph: ArtGlyph) => {
+      const rgb = blend(glyph.color, emberRgb, glyph.hover * 0.82);
+      context.fillStyle = `rgb(${rgb.join(' ')})`;
+      context.globalAlpha = glyph.alpha * glyph.entrance;
+      context.shadowColor = glyph.dense ? `rgba(${blueRgb.join(' ')}, 0.18)` : 'transparent';
+      context.shadowBlur = glyph.dense ? 1.5 : 0;
+      const enterOffset = motionDisabled ? 0 : (1 - glyph.entrance) * 5;
+      context.fillText(glyph.character, glyph.x + glyph.offsetX, glyph.y + glyph.offsetY + enterOffset, cellWidth);
     };
 
-    const rebuildCells = () => {
+    const clearGlyph = (glyph: ArtGlyph) => {
+      const enterOffset = motionDisabled ? 0 : (1 - glyph.entrance) * 5;
+      const x = glyph.x + glyph.offsetX;
+      const y = glyph.y + glyph.offsetY + enterOffset;
+      context.clearRect(x - cellWidth / 2 - 3, y - fontSize / 2 - 3, cellWidth + 6, fontSize + 6);
+    };
+
+    const drawChangedGlyph = (glyph: ArtGlyph) => {
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      context.font = `500 ${fontSize}px ${monoFont}`;
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      clearGlyph(glyph);
+      drawGlyph(glyph);
+      context.globalAlpha = 1;
+      context.shadowBlur = 0;
+    };
+
+    const startFlicker = () => {
+      if (motionDisabled || !isVisible || flickerTimer !== null) return;
+      flickerTimer = window.setInterval(() => {
+        const visibleGlyphs = glyphs.filter((glyph) => glyph.entrance >= 1);
+        if (!visibleGlyphs.length) return;
+        const amount = Math.max(1, Math.ceil(visibleGlyphs.length * (0.01 + Math.random() * 0.01)));
+        const selected = new Set<ArtGlyph>();
+        while (selected.size < amount) selected.add(visibleGlyphs[Math.floor(Math.random() * visibleGlyphs.length)]);
+        selected.forEach((glyph) => {
+          const options = ['0', '1', '2'].filter((digit) => digit !== glyph.character);
+          glyph.character = options[Math.floor(Math.random() * options.length)];
+          drawChangedGlyph(glyph);
+        });
+      }, 150);
+    };
+    const stopFlicker = () => {
+      if (flickerTimer !== null) window.clearInterval(flickerTimer);
+      flickerTimer = null;
+    };
+
+    const rebuildGlyphs = () => {
       const bounds = canvas.getBoundingClientRect();
-      if (!bounds.width || !bounds.height) return;
+      if (!bounds.width) return;
       width = bounds.width;
-      height = bounds.height;
-      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      fontSize = width / (ART_COLUMNS * 0.55);
+      cellWidth = fontSize * 0.55;
+      height = ART_LINES.length * fontSize;
+      canvas.style.height = `${height}px`;
+      pixelRatio = window.devicePixelRatio || 1;
       canvas.width = Math.round(width * pixelRatio);
       canvas.height = Math.round(height * pixelRatio);
-      sourceCanvas.width = Math.round(width);
-      sourceCanvas.height = Math.round(height);
-      drawGeneratedMonogram();
+      glyphs = [];
 
-      const pixels = sourceContext.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height).data;
-      columns = Math.ceil(width / CELL_SIZE);
-      rows = Math.ceil(height / CELL_SIZE);
-      cells.length = 0;
-      movingCells.clear();
-
-      for (let row = 0; row < rows; row += 1) {
-        for (let column = 0; column < columns; column += 1) {
-          const x = Math.min(width - 1, (column + 0.5) * CELL_SIZE);
-          const y = Math.min(height - 1, (row + 0.5) * CELL_SIZE);
-          const pixelX = Math.floor(x);
-          const pixelY = Math.floor(y);
-          let red = 0;
-          let green = 0;
-          let blue = 0;
-          let samples = 0;
-
-          for (let sampleY = -1; sampleY <= 1; sampleY += 1) {
-            for (let sampleX = -1; sampleX <= 1; sampleX += 1) {
-              const sx = Math.max(0, Math.min(sourceCanvas.width - 1, pixelX + sampleX));
-              const sy = Math.max(0, Math.min(sourceCanvas.height - 1, pixelY + sampleY));
-              const offset = (sy * sourceCanvas.width + sx) * 4;
-              red += pixels[offset];
-              green += pixels[offset + 1];
-              blue += pixels[offset + 2];
-              samples += 1;
-            }
-          }
-
-          const brightness = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / (samples * 255);
-          const openingX = x - width * 0.70;
-          const openingY = Math.abs(y - height * 0.50);
-          const opening = openingX > width * 0.155 * 0.68 && openingY < openingX * Math.tan(Math.PI / 6);
-          const backgroundGlyph = opening
-            ? ((row + column) % 2 === 0 ? '·' : '.')
-            : BACKGROUND_GLYPHS[(row * 17 + column * 31) % BACKGROUND_GLYPHS.length];
-          cells.push({ x, y, brightness, offsetX: 0, offsetY: 0, hover: 0, backgroundGlyph, opening });
-        }
-      }
-      renderBase();
-      draw();
+      ART_LINES.forEach((line, row) => {
+        Array.from(line).forEach((maskCharacter, column) => {
+          if (maskCharacter === ' ') return;
+          const density = DENSITY[maskCharacter] ?? { alpha: 0.34, level: 0 };
+          const digit = DIGIT_LINES[row % DIGIT_LINES.length]?.[column % DIGIT_COLUMNS] ?? '0';
+          glyphs.push({
+            character: digit,
+            row,
+            x: column * cellWidth + cellWidth / 2,
+            y: row * fontSize + fontSize / 2,
+            alpha: density.alpha,
+            color: density.level === 1 ? blueRgb : density.level === 0.55 ? blend(slateRgb, blueRgb, 0.55) : slateRgb,
+            dense: density.level === 1,
+            entrance: motionDisabled ? 1 : 0,
+            hover: 0,
+            offsetX: 0,
+            offsetY: 0,
+          });
+        });
+      });
+      if (hasEntered) scheduleFrame();
     };
 
-    const drawCharacter = (cell: CharacterCell, brightness: number, x: number, y: number) => {
-      const isLetter = brightness >= 0.055;
-      const rampIndex = Math.min(DENSITY_RAMP.length - 1, Math.floor(brightness * (DENSITY_RAMP.length - 1)));
-      const character = isLetter ? DENSITY_RAMP[Math.max(3, rampIndex)] : cell.backgroundGlyph;
-      context.globalAlpha = isLetter ? Math.min(1, 0.5 + brightness * 0.5) : cell.opening ? 0.08 : 0.15;
-      const amount = isLetter ? cell.hover * 0.78 : 0;
-      const rgb = baseRgb.map((channel, index) => Math.round(channel + (accentRgb[index] - channel) * amount));
-      context.fillStyle = `rgb(${rgb.join(' ')})`;
-      context.fillText(character, x, y);
-    };
-
-    const renderBase = () => {
+    const draw = (now: number) => {
+      frameId = null;
+      if (!hasEntered) return;
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       context.clearRect(0, 0, width, height);
-      context.font = `600 ${CELL_SIZE * 1.12}px ${monoFont}`;
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-      context.globalAlpha = 1;
-      for (const cell of cells) drawCharacter(cell, cell.brightness, cell.x, cell.y);
-      context.globalAlpha = 1;
-      baseFrame = context.getImageData(0, 0, canvas.width, canvas.height);
-    };
-
-    const draw = () => {
-      if (!baseFrame) return;
-      let unsettled = false;
-      const candidates = new Set(movingCells);
-      if (pointer.active) {
-        const minColumn = Math.max(0, Math.floor((pointer.x - INTERACTION_RADIUS) / CELL_SIZE));
-        const maxColumn = Math.min(columns - 1, Math.ceil((pointer.x + INTERACTION_RADIUS) / CELL_SIZE));
-        const minRow = Math.max(0, Math.floor((pointer.y - INTERACTION_RADIUS) / CELL_SIZE));
-        const maxRow = Math.min(rows - 1, Math.ceil((pointer.y + INTERACTION_RADIUS) / CELL_SIZE));
-        for (let row = minRow; row <= maxRow; row += 1) {
-          for (let column = minColumn; column <= maxColumn; column += 1) {
-            const cell = cells[row * columns + column];
-            if (cell) candidates.add(cell);
-          }
-        }
-      }
-
-      if (candidates.size === 0) {
-        frameId = null;
-        return;
-      }
-
-      let minX = width;
-      let minY = height;
-      let maxX = 0;
-      let maxY = 0;
-      for (const cell of candidates) {
-        minX = Math.min(minX, cell.x);
-        minY = Math.min(minY, cell.y);
-        maxX = Math.max(maxX, cell.x);
-        maxY = Math.max(maxY, cell.y);
-      }
-      const padding = CELL_SIZE * 2.5;
-      const dirtyLeft = Math.max(0, Math.floor((minX - padding) * pixelRatio));
-      const dirtyTop = Math.max(0, Math.floor((minY - padding) * pixelRatio));
-      const dirtyRight = Math.min(canvas.width, Math.ceil((maxX + padding) * pixelRatio));
-      const dirtyBottom = Math.min(canvas.height, Math.ceil((maxY + padding) * pixelRatio));
-      context.putImageData(baseFrame, 0, 0, dirtyLeft, dirtyTop, dirtyRight - dirtyLeft, dirtyBottom - dirtyTop);
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-      context.font = `600 ${CELL_SIZE * 1.12}px ${monoFont}`;
+      context.font = `500 ${fontSize}px ${monoFont}`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
 
-      for (const cell of candidates) {
-        if (!cell) continue;
-        const hasOffset = Math.abs(cell.offsetX) > 0.1 || Math.abs(cell.offsetY) > 0.1;
-        const dx = cell.x - pointer.x;
-        const dy = cell.y - pointer.y;
+      const entranceElapsed = motionDisabled ? Number.POSITIVE_INFINITY : now - entranceStart;
+      const entranceDuration = ENTRANCE_STAGGER + ENTRANCE_FADE;
+      let animating = entranceElapsed < entranceDuration;
+      let settling = false;
+
+      for (const glyph of glyphs) {
+        const rowDelay = ART_LINES.length > 1 ? (glyph.row / (ART_LINES.length - 1)) * ENTRANCE_STAGGER : 0;
+        glyph.entrance = motionDisabled ? 1 : Math.max(0, Math.min(1, (entranceElapsed - rowDelay) / ENTRANCE_FADE));
+        const dx = glyph.x - pointer.x;
+        const dy = glyph.y - pointer.y;
         const distance = Math.hypot(dx, dy);
-        const influence = pointer.active ? Math.max(0, 1 - distance / INTERACTION_RADIUS) : 0;
-        cell.hover += (influence - cell.hover) * 0.18;
-        const hoverMoving = Math.abs(influence - cell.hover) > 0.01;
-        if (hoverMoving) unsettled = true;
-        const force = influence * influence * 9;
-        const targetX = influence > 0 && distance > 0.1 ? (dx / distance) * force : 0;
-        const targetY = influence > 0 && distance > 0.1 ? (dy / distance) * force : 0;
-        cell.offsetX += (targetX - cell.offsetX) * 0.22;
-        cell.offsetY += (targetY - cell.offsetY) * 0.22;
-        const stillMoving = Math.abs(targetX - cell.offsetX) > 0.1 || Math.abs(targetY - cell.offsetY) > 0.1;
-        if (stillMoving || hoverMoving) {
-          unsettled = true;
-          movingCells.add(cell);
-        } else {
-          cell.offsetX = targetX;
-          cell.offsetY = targetY;
-          movingCells.delete(cell);
-        }
-
-        if (influence > 0.01 || cell.hover > 0.01 || hasOffset) {
-          context.clearRect(cell.x - CELL_SIZE * 0.7, cell.y - CELL_SIZE * 0.7, CELL_SIZE * 1.4, CELL_SIZE * 1.4);
-          drawCharacter(cell, cell.brightness, cell.x + cell.offsetX, cell.y + cell.offsetY);
-        }
+        const influence = !motionDisabled && pointer.active ? Math.max(0, 1 - distance / HOVER_RADIUS) : 0;
+        glyph.hover += (influence - glyph.hover) * 0.2;
+        const travel = influence * influence * 3;
+        const targetX = distance > 0.1 && influence > 0 ? (dx / distance) * travel : 0;
+        const targetY = distance > 0.1 && influence > 0 ? (dy / distance) * travel : 0;
+        glyph.offsetX += (targetX - glyph.offsetX) * 0.2;
+        glyph.offsetY += (targetY - glyph.offsetY) * 0.2;
+        if (Math.abs(influence - glyph.hover) > 0.01 || Math.abs(targetX - glyph.offsetX) > 0.1 || Math.abs(targetY - glyph.offsetY) > 0.1) settling = true;
+        drawGlyph(glyph);
       }
       context.globalAlpha = 1;
+      context.shadowBlur = 0;
 
-      if (unsettled) frameId = requestAnimationFrame(draw);
-      else frameId = null;
+      if (animating || settling) scheduleFrame();
+      else startFlicker();
     };
 
-    const schedule = () => {
+    const scheduleFrame = () => {
       if (frameId === null) frameId = requestAnimationFrame(draw);
+    };
+    const enter = () => {
+      if (!hasEntered) {
+        hasEntered = true;
+        entranceStart = performance.now();
+      }
+      if (motionDisabled) draw(performance.now());
+      else scheduleFrame();
     };
     const handlePointerMove = (event: PointerEvent) => {
       if (motionDisabled || event.pointerType !== 'mouse') return;
       const bounds = canvas.getBoundingClientRect();
-      pointer = { x: event.clientX - bounds.left, y: event.clientY - bounds.top, active: true };
-      schedule();
+      pointer.x = event.clientX - bounds.left;
+      pointer.y = event.clientY - bounds.top;
+      pointer.active = true;
+      scheduleFrame();
     };
     const handlePointerLeave = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse') return;
       pointer.active = false;
-      schedule();
+      scheduleFrame();
     };
     const updateMotionPreference = () => {
       motionDisabled = reducedMotion.matches || coarsePointer.matches || compactViewport.matches;
-      pointer.active = false;
-      if (motionDisabled && frameId !== null) {
-        cancelAnimationFrame(frameId);
+      if (motionDisabled) {
+        stopFlicker();
+        pointer.active = false;
+        if (frameId !== null) cancelAnimationFrame(frameId);
         frameId = null;
-        cells.forEach((cell) => { cell.offsetX = 0; cell.offsetY = 0; cell.hover = 0; });
-        movingCells.clear();
-        if (baseFrame) context.putImageData(baseFrame, 0, 0);
+        glyphs.forEach((glyph) => { glyph.hover = 0; glyph.offsetX = 0; glyph.offsetY = 0; });
+        if (hasEntered) draw(performance.now());
+      } else if (isVisible) {
+        startFlicker();
       }
     };
 
-    const resizeObserver = new ResizeObserver(rebuildCells);
+    rebuildGlyphs();
+    const resizeObserver = new ResizeObserver(rebuildGlyphs);
     resizeObserver.observe(canvas);
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          enter();
+          startFlicker();
+        } else {
+          stopFlicker();
+        }
+      });
+    }, { threshold: 0.05 });
+    intersectionObserver.observe(canvas);
     canvas.addEventListener('pointermove', handlePointerMove, { passive: true });
     canvas.addEventListener('pointerleave', handlePointerLeave, { passive: true });
     reducedMotion.addEventListener('change', updateMotionPreference);
     coarsePointer.addEventListener('change', updateMotionPreference);
     compactViewport.addEventListener('change', updateMotionPreference);
-    rebuildCells();
 
     return () => {
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       canvas.removeEventListener('pointermove', handlePointerMove);
       canvas.removeEventListener('pointerleave', handlePointerLeave);
       reducedMotion.removeEventListener('change', updateMotionPreference);
       coarsePointer.removeEventListener('change', updateMotionPreference);
       compactViewport.removeEventListener('change', updateMotionPreference);
+      stopFlicker();
       if (frameId !== null) cancelAnimationFrame(frameId);
     };
   }, []);
@@ -290,8 +278,7 @@ export const ClosingPiece: React.FC<ClosingPieceProps> = ({ label, owner, locati
         <span>{owner}</span>
         <span>{location}</span>
       </header>
-      <canvas ref={canvasRef} className="closing-piece-canvas" role="img" aria-label={label} />
-      <canvas ref={sourceCanvasRef} className="closing-piece-source" aria-hidden="true" />
+      <canvas ref={canvasRef} className="closing-piece-canvas" role="img" aria-label="Monograma AC" />
     </section>
   );
 };
