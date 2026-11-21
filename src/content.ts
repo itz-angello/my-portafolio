@@ -30,14 +30,6 @@ export interface Service {
   highlights: LocalizedString[];
 }
 
-export interface Certificate {
-  id: string;
-  name: string;
-  issuer: string;
-  date: string;
-  image?: string; // path to certificate image
-}
-
 export interface SiteContent {
   // Personal & Brand
   name: string;
@@ -60,16 +52,19 @@ export interface SiteContent {
         home: string;
         about: string;
         portfolio: string;
+        skills: string;
+        certificates: string;
         contact: string;
         // legacy (kept for any old component references)
         projects: string;
-        skills: string;
         services: string;
       };
       metadata: {
         home: { title: string; description: string };
         about: { title: string; description: string };
         portfolio: { title: string; description: string };
+        skills: { title: string; description: string };
+        certificates: { title: string; description: string };
         contact: { title: string; description: string };
         notFound: { title: string; description: string };
       };
@@ -104,9 +99,6 @@ export interface SiteContent {
         nowUsingTools: string[];
       };
       portfolio: {
-        whatIDo: string;
-        developCard: { title: string; tags: string[] };
-        restoreCard: { title: string; tags: string[] };
         featuredHeading: string;
         archiveHeading: string;
         archiveCount: string;
@@ -117,11 +109,6 @@ export interface SiteContent {
         role: string;
         year: string;
         categories: { all: string; personal: string; client: string; learning: string };
-        tabs: {
-          projects: string;
-          certificates: string;
-          skills: string;
-        };
         heading: string;
         subheading: string;
         liveButton: string;
@@ -152,6 +139,11 @@ export interface SiteContent {
         workshopTitle: string;
         workshopDescription: string;
         categories: { languages: string; tools: string; craft: string };
+      };
+      certificates: {
+        heading: string;
+        empty: string;
+        verify: string;
       };
       services: {
         badge: string;
@@ -195,7 +187,6 @@ export interface SiteContent {
   projects: Project[];
   skills: Skill[];
   services: Service[];
-  certificates: Certificate[]; // empty for now — user will fill
   marqueeScreenshots: { title: string; image: string }[];
 }
 
@@ -217,10 +208,11 @@ export const content: SiteContent = {
         home: "Home",
         about: "About",
         portfolio: "Portfolio",
+        skills: "Skills",
+        certificates: "Certificates",
         contact: "Contact",
         // legacy
         projects: "Projects",
-        skills: "Skills",
         services: "Services",
       },
       metadata: {
@@ -235,6 +227,14 @@ export const content: SiteContent = {
         portfolio: {
           title: "Portfolio — Angel Chacón, Web Developer in Guatemala",
           description: "Selected web development projects by Angel Chacón, web developer in Guatemala.",
+        },
+        skills: {
+          title: "Skills — Angel Chacón, Web Developer in Guatemala",
+          description: "The tools and skills of Angel Chacón, web developer in Guatemala.",
+        },
+        certificates: {
+          title: "Certificates — Angel Chacón, Web Developer in Guatemala",
+          description: "Certificates and verified learning by Angel Chacón, web developer in Guatemala.",
         },
         contact: {
           title: "Contact — Angel Chacón, Web Developer in Guatemala",
@@ -290,15 +290,6 @@ export const content: SiteContent = {
         nowUsingTools: ["VS Code", "Antigravity", "Codex"],
       },
       portfolio: {
-        whatIDo: "WHAT I DO",
-        developCard: {
-          title: "Develop",
-          tags: ["React", "TypeScript", "Vite", "Responsive", "SEO"],
-        },
-        restoreCard: {
-          title: "Restore",
-          tags: ["Legacy HTML", "CSS fixes", "Mobile bugs", "Speed boost"],
-        },
         featuredHeading: "Featured projects",
         archiveHeading: "More projects",
         archiveCount: "{count} projects in archive",
@@ -309,12 +300,7 @@ export const content: SiteContent = {
         role: "Role",
         year: "Year",
         categories: { all: "All", personal: "Personal", client: "Client", learning: "Learning" },
-        tabs: {
-          projects: "Projects",
-          certificates: "Certificates",
-          skills: "Skills",
-        },
-        heading: "Featured Work",
+        heading: "Projects",
         subheading: "A selection of projects crafted with precision, responsiveness, and performance.",
         liveButton: "Live project",
         previewLabel: "View project details",
@@ -344,6 +330,11 @@ export const content: SiteContent = {
         workshopTitle: "Tools of the workshop",
         workshopDescription: "The languages, tools, and practices I use to design and build for the web.",
         categories: { languages: "Languages", tools: "Tools", craft: "Craft" },
+      },
+      certificates: {
+        heading: "Certificates",
+        empty: "Coming soon",
+        verify: "Verify certificate",
       },
       services: {
         badge: "What I Offer",
@@ -388,10 +379,11 @@ export const content: SiteContent = {
         home: "Inicio",
         about: "Sobre mí",
         portfolio: "Portafolio",
+        skills: "Habilidades",
+        certificates: "Certificados",
         contact: "Contacto",
         // legacy
         projects: "Proyectos",
-        skills: "Habilidades",
         services: "Servicios",
       },
       metadata: {
@@ -406,6 +398,14 @@ export const content: SiteContent = {
         portfolio: {
           title: "Portafolio — Angel Chacón, Desarrollador web en Guatemala",
           description: "Proyectos seleccionados de Angel Chacón, desarrollador web en Guatemala.",
+        },
+        skills: {
+          title: "Habilidades — Angel Chacón, Desarrollador web en Guatemala",
+          description: "Herramientas y habilidades de Angel Chacón, desarrollador web en Guatemala.",
+        },
+        certificates: {
+          title: "Certificados — Angel Chacón, Desarrollador web en Guatemala",
+          description: "Certificados y formación verificada de Angel Chacón, desarrollador web en Guatemala.",
         },
         contact: {
           title: "Contacto — Angel Chacón, Desarrollador web en Guatemala",
@@ -461,15 +461,6 @@ export const content: SiteContent = {
         nowUsingTools: ["VS Code", "Antigravity", "Codex"],
       },
       portfolio: {
-        whatIDo: "LO QUE HAGO",
-        developCard: {
-          title: "Desarrollo",
-          tags: ["React", "TypeScript", "Vite", "Responsive", "SEO"],
-        },
-        restoreCard: {
-          title: "Restauración",
-          tags: ["HTML heredado", "Corrección CSS", "Bugs móvil", "Velocidad"],
-        },
         featuredHeading: "Proyectos destacados",
         archiveHeading: "Más proyectos",
         archiveCount: "{count} proyectos en archivo",
@@ -480,12 +471,7 @@ export const content: SiteContent = {
         role: "Rol",
         year: "Año",
         categories: { all: "Todos", personal: "Personal", client: "Cliente", learning: "Aprendizaje" },
-        tabs: {
-          projects: "Proyectos",
-          certificates: "Certificados",
-          skills: "Habilidades",
-        },
-        heading: "Proyectos Destacados",
+        heading: "Proyectos",
         subheading: "Una muestra de proyectos desarrollados con enfoque en rendimiento y diseño adaptativo.",
         liveButton: "Ver proyecto",
         previewLabel: "Ver detalles del proyecto",
@@ -515,6 +501,11 @@ export const content: SiteContent = {
         workshopTitle: "Herramientas del taller",
         workshopDescription: "Lenguajes, herramientas y prácticas que uso para diseñar y construir para la web.",
         categories: { languages: "Lenguajes", tools: "Herramientas", craft: "Oficio" },
+      },
+      certificates: {
+        heading: "Certificados",
+        empty: "Próximamente",
+        verify: "Verificar certificado",
       },
       services: {
         badge: "Lo que ofrezco",
@@ -555,9 +546,6 @@ export const content: SiteContent = {
   },
 
   projects,
-
-  // Certificates — empty for now; fill in when ready
-  certificates: [],
 
   skills: [
     {

@@ -30,7 +30,7 @@ export const Skills: React.FC = () => {
     <section id="skills" className="workshop-section" aria-labelledby="workshop-title">
       <div className="workshop-header">
         <span className="workshop-stamp"><Wrench size={14} aria-hidden="true" />{t.skills.workshopTitle}</span>
-        <h2 id="workshop-title">{t.skills.heading}</h2>
+        <h1 id="workshop-title">{t.skills.heading}</h1>
         <p>{t.skills.workshopDescription}</p>
       </div>
 

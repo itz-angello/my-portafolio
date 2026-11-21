@@ -14,12 +14,18 @@ const fixedRoutes: Record<string, string> = {
   '/contact/': '/src/entries/contact.html',
   '/portfolio': '/src/entries/portfolio.html',
   '/portfolio/': '/src/entries/portfolio.html',
+  '/skills': '/src/entries/skills.html',
+  '/skills/': '/src/entries/skills.html',
+  '/certificates': '/src/entries/certificates.html',
+  '/certificates/': '/src/entries/certificates.html',
 };
 
 const outputCopies: Array<[string, string]> = [
   ['src/entries/about.html', 'about/index.html'],
   ['src/entries/contact.html', 'contact/index.html'],
   ['src/entries/portfolio.html', 'portfolio/index.html'],
+  ['src/entries/skills.html', 'skills/index.html'],
+  ['src/entries/certificates.html', 'certificates/index.html'],
   ['src/entries/404.html', '404.html'],
   ...projects.map((project) => ['src/entries/project.html', `portfolio/${project.slug}/index.html`] as [string, string]),
 ];
@@ -78,6 +84,8 @@ export default defineConfig({
         home: path.resolve(projectRoot, 'index.html'),
         about: path.resolve(projectRoot, 'src/entries/about.html'),
         portfolio: path.resolve(projectRoot, 'src/entries/portfolio.html'),
+        skills: path.resolve(projectRoot, 'src/entries/skills.html'),
+        certificates: path.resolve(projectRoot, 'src/entries/certificates.html'),
         contact: path.resolve(projectRoot, 'src/entries/contact.html'),
         project: path.resolve(projectRoot, 'src/entries/project.html'),
         '404': path.resolve(projectRoot, 'src/entries/404.html'),

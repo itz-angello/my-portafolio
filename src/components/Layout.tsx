@@ -6,7 +6,7 @@ import { CursorOrb } from './CursorOrb';
 import { content } from '../content';
 import { MetadataPage, PageMetadata } from './PageMetadata';
 
-type Page = 'home' | 'about' | 'portfolio' | 'contact';
+type Page = 'home' | 'about' | 'portfolio' | 'skills' | 'certificates' | 'contact';
 
 interface LayoutProps {
   currentPage: Page;

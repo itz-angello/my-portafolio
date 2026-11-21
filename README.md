@@ -47,9 +47,13 @@ React 19, TypeScript, Vite, Tailwind CSS 4, Framer Motion y Lucide React.
 - `src/entries/`: entradas HTML y React para las rutas públicas.
 - `src/content.ts`: textos ES/EN y contenido general.
 - `src/content/projects.ts`: catálogo bilingüe de proyectos y datos de sus rutas.
+- `src/content/certificates.ts`: catálogo bilingüe de certificados.
+- `src/pages/SkillsPage.tsx` y `src/pages/CertificatesPage.tsx`: páginas propias de habilidades y certificados.
 - `src/assets/`: imágenes y otros recursos del sitio.
 - `public/`: archivos estáticos públicos, como el favicon.
 - `dist/`: salida generada por el build; no se edita a mano.
+
+Las rutas públicas incluyen `/`, `/about/`, `/portfolio/`, `/skills/`, `/certificates/` y `/contact/`. Vite también genera una ruta independiente para cada ficha `/portfolio/<slug>/`.
 
 ## Cambiar textos ES/EN
 

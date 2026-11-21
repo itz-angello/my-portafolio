@@ -3,7 +3,7 @@ import { content } from '../content';
 import { Project } from '../content/projects';
 import { useLanguage } from '../context/LanguageContext';
 
-export type MetadataPage = 'home' | 'about' | 'portfolio' | 'contact' | 'notFound' | 'project';
+export type MetadataPage = 'home' | 'about' | 'portfolio' | 'skills' | 'certificates' | 'contact' | 'notFound' | 'project';
 
 interface PageMetadataProps {
   page: MetadataPage;
